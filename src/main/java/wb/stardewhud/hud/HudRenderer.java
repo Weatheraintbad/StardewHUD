@@ -26,7 +26,7 @@ public class HudRenderer {
     public static final Identifier CONNECTOR = new Identifier(StardewHUD.MOD_ID, "textures/gui/connector.png");
 
     // HUD尺寸常量
-    private static final int CLOCK_WIDTH = 35;     // 时钟背景宽度
+    private static final int CLOCK_WIDTH = 38;     // 时钟背景宽度
     private static final int CLOCK_HEIGHT = 60;    // 时钟背景高度
     private static final int INFO_WIDTH = 80;      // 信息框宽度
     private static final int INFO_HEIGHT = 60;     // 信息框高度

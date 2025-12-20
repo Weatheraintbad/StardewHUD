@@ -11,11 +11,17 @@ public class ClockComponent {
     private final HudRenderer hudRenderer;
     private float currentAngle = 0.0f;
 
-    private static final int CLOCK_WIDTH = 35;
+    // 时钟尺寸常量
+    private static final int CLOCK_WIDTH = 38;
     private static final int CLOCK_HEIGHT = 60;
-    private static final int CENTER_X = CLOCK_WIDTH;
-    private static final int CENTER_Y = CLOCK_HEIGHT / 2;
+    private static final int CENTER_X = CLOCK_WIDTH; // 圆心在右边框中心
+    private static final int CENTER_Y = CLOCK_HEIGHT / 2; // 圆心Y坐标（30）
 
+    // 指针纹理尺寸
+    private static final int HAND_LENGTH = 29; // 指针长度
+    private static final int HAND_HEIGHT = 11; // 指针高度（厚度）
+
+    // 纹理标识符
     private static final Identifier CLOCK_HAND = new Identifier(StardewHUD.MOD_ID, "textures/gui/clock_hand.png");
 
     public ClockComponent(HudRenderer hudRenderer) {
@@ -23,23 +29,40 @@ public class ClockComponent {
     }
 
     public void render(DrawContext context, int x, int y, float tickDelta) {
+        // 渲染时钟背景（35x60半圆）
         context.setShaderColor(1.0f, 1.0f, 1.0f, hudRenderer.getConfig().backgroundAlpha);
         context.drawTexture(HudRenderer.CLOCK_BG, x, y, 0, 0, CLOCK_WIDTH, CLOCK_HEIGHT, CLOCK_WIDTH, CLOCK_HEIGHT);
         context.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 
+        // 渲染时钟指针
         renderClockHand(context, x + CENTER_X, y + CENTER_Y, currentAngle);
     }
 
     private void renderClockHand(DrawContext context, int centerX, int centerY, float angle) {
+        // 保存变换状态
         context.getMatrices().push();
-        context.getMatrices().translate(centerX, centerY, 0);
+
+        // 将原点移动到圆心，再向左偏一点
+        context.getMatrices().translate(centerX - 2, centerY, 0);
+
+        // 旋转到指定角度
         context.getMatrices().multiply(
                 net.minecraft.util.math.RotationAxis.POSITIVE_Z.rotationDegrees(angle)
         );
 
-        int handLength = 25;
-        context.drawTexture(CLOCK_HAND, -handLength, -1, 0, 0, handLength, 3, handLength, 3);
+        // 关键修复：调整绘制位置，使旋转中心在指针左侧中心
+        // 之前：context.drawTexture(CLOCK_HAND, -handLength, -1, 0, 0, handLength, 10, handLength, 10);
+        // 问题：旋转中心在纹理的左上角(-handLength, -1)
 
+        // 修复：让旋转中心在指针左侧的中心点
+        // 指针从圆心向左延伸，所以X坐标为-HAND_LENGTH（左侧）
+        // Y坐标应该是-HAND_HEIGHT/2，让指针垂直居中
+        int drawX = -HAND_LENGTH;
+        int drawY = -HAND_HEIGHT / 2; // 原来是-1，现在改为-HAND_HEIGHT/2
+
+        context.drawTexture(CLOCK_HAND, drawX, drawY, 0, 0, HAND_LENGTH, HAND_HEIGHT, HAND_LENGTH, HAND_HEIGHT);
+
+        // 恢复变换状态
         context.getMatrices().pop();
     }
 
@@ -54,10 +77,15 @@ public class ClockComponent {
     }
 
     private float calculateClockAngle(long timeOfDay) {
+        // 时间映射：左半圆内逆时针旋转
+        // 18:00（12000刻）→ 90°（顶部）
+        // 24:00（18000刻）→ 135°（左上）
+        // 6:00（0刻）→ 180°（左侧）
+        // 12:00（6000刻）→ 225°（左下）
+        // 18:00（12000刻）→ 270°（底部，跳回90°）
 
         long offsetFrom1800 = (timeOfDay + 12000) % 24000;
         float progress = offsetFrom1800 / 24000.0f;
-
         float angle = 90.0f - progress * 180.0f;
 
         return angle;

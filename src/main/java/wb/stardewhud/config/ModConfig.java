@@ -23,7 +23,7 @@ public class ModConfig {
     public boolean enabled = true;
     public HudPosition position = new HudPosition(0, 0); // 默认0,0表示自动定位
     public float scale = 1.0f;
-    public float backgroundAlpha = 0.8f;
+    public float backgroundAlpha = 1.0f;// 背景不透明度
     public String counterItemId = "minecraft:diamond";
 
     // HUD位置类
