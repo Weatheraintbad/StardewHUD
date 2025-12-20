@@ -1,0 +1,37 @@
+{
+	"schemaVersion": 1,
+	"id": "stardewhud",
+	"version": "${version}",
+	"name": "Stardew HUD",
+	"description": "This is an example description! Tell everyone what your mod is about!",
+	"authors": [
+		"Me!"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/stardewhud/icon.png",
+	"environment": "*",
+  "entrypoints": {
+    "client": [ "wb.stardewhud.StardewHUD" ],
+    "main": []
+  },
+	"mixins": [
+		"stardewhud.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.16.14",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+     "custom": {
+        "fabric:networking": {
+        "stardewhud:day_time": {
+        "version": 1
+      }
+    }
+  }
+}
