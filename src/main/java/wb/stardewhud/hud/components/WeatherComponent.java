@@ -31,9 +31,9 @@ public class WeatherComponent {
         // 根据当前天气状态选择图标
         Identifier iconTexture = getWeatherIcon();
 
-        // 渲染天气图标（16x16），使用给定的坐标
+        // 渲染天气图标（20x14），使用给定的坐标
         if (iconTexture != null) {
-            context.drawTexture(iconTexture, x, y, 0, 0, 16, 16, 16, 16);
+            context.drawTexture(iconTexture, x - 7, y, 0, 0, 21, 13, 21, 13);
         }
     }
 

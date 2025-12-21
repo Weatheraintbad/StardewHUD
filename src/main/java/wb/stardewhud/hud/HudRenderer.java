@@ -23,20 +23,19 @@ public class HudRenderer {
     public static final Identifier CLOCK_BG = new Identifier(StardewHUD.MOD_ID, "textures/gui/clock_bg.png");
     public static final Identifier INFO_BG = new Identifier(StardewHUD.MOD_ID, "textures/gui/info_bg.png");
     public static final Identifier COUNTER_BG = new Identifier(StardewHUD.MOD_ID, "textures/gui/counter_bg.png");
-    public static final Identifier CONNECTOR = new Identifier(StardewHUD.MOD_ID, "textures/gui/connector.png");
 
-    // HUD尺寸常量
-    private static final int CLOCK_WIDTH = 38;     // 时钟背景宽度
-    private static final int CLOCK_HEIGHT = 60;    // 时钟背景高度
+    // HUD尺寸常量（更新后）
+    private static final int CLOCK_WIDTH = 40;     // 时钟背景宽度
+    private static final int CLOCK_HEIGHT = 65;    // 时钟背景高度
     private static final int INFO_WIDTH = 80;      // 信息框宽度
-    private static final int INFO_HEIGHT = 60;     // 信息框高度
+    private static final int INFO_HEIGHT = 65;     // 信息框高度
     private static final int COUNTER_WIDTH = 100;  // 计数器框宽度
-    private static final int COUNTER_HEIGHT = 20;  // 计数器框高度
-    private static final int CONNECTOR_HEIGHT = 5; // 连接器高度
+    private static final int COUNTER_HEIGHT = 32;  // 计数器框高度
+    private static final int COUNTER_TOP_MARGIN = -2; // 计数器顶部与信息框的间距
 
-    // 总宽度和高度
+    // 总宽度和高度（更新后）
     private static final int TOTAL_WIDTH = CLOCK_WIDTH + INFO_WIDTH;
-    private static final int TOTAL_HEIGHT = INFO_HEIGHT + CONNECTOR_HEIGHT + COUNTER_HEIGHT;
+    private static final int TOTAL_HEIGHT = INFO_HEIGHT + COUNTER_TOP_MARGIN + COUNTER_HEIGHT;
 
     public HudRenderer(ModConfig config) {
         this.config = config;
@@ -73,32 +72,32 @@ public class HudRenderer {
         context.getMatrices().scale(config.scale, config.scale, 1.0f);
 
         try {
-            // 1. 渲染时钟组件（35x60）
+            // 1. 渲染计数器
+            // 计数器靠右侧：计数器宽度100，总宽度118，所以计数器左偏移=18
+            int counterX = CLOCK_WIDTH + INFO_WIDTH - COUNTER_WIDTH;
+            int counterY = INFO_HEIGHT + COUNTER_TOP_MARGIN; // 使用新的间距
+            itemCounter.render(context, counterX, counterY);
+
+            // 2. 渲染时钟组件（38x60）
             clock.render(context, 0, 0, tickDelta);
 
-            // 2. 渲染信息框背景（80x60）
-            renderInfoBackground(context, CLOCK_WIDTH, 0);
-
-            // 3. 渲染连接器（两个，连接计数器栏的1/3和2/3位置）
-            renderConnectors(context);
-
-            // 4. 渲染时间信息（第1层）
-            timeDisplay.renderGameInfo(context, CLOCK_WIDTH + 10, 5);
-
-            // 5. 渲染天气和运势图标（第2层）
-            int iconY = 28;
-            int iconSpacing = 20;
+            // === 天气和运势图标位置（如果需要调整也可以在这里改）===
+            int iconY = 26;
+            int iconSpacing = 24;
             int firstIconX = CLOCK_WIDTH + 15;
             weather.render(context, firstIconX, iconY);
             fortune.render(context, firstIconX + iconSpacing, iconY);
 
-            // 6. 渲染游戏内时间（第3层）
-            timeDisplay.renderTime(context, CLOCK_WIDTH + 10, 45);
+            // 3. 渲染信息框背景（80x60）- 现在在计数器之后渲染，会盖住计数器的一部分
+            renderInfoBackground(context, CLOCK_WIDTH, 0);
+            int gameInfoTextWidth = timeDisplay.getGameInfoTextWidth(context);
+            int gameInfoX = CLOCK_WIDTH + (INFO_WIDTH - gameInfoTextWidth) / 2;
 
-            // 7. 渲染计数器（第4层，靠右侧悬挂）
-            // 计数器靠右侧：计数器宽度100，总宽度115，所以计数器左偏移=15
-            int counterX = CLOCK_WIDTH + INFO_WIDTH - COUNTER_WIDTH;
-            itemCounter.render(context, counterX, INFO_HEIGHT + CONNECTOR_HEIGHT);
+            // === 第一层日期显示水平居中 ===
+            timeDisplay.renderGameInfo(context, CLOCK_WIDTH, INFO_WIDTH, 10); // 传入信息框参数用于居中计算
+
+            // === 第三层时间显示水平居中 ===
+            timeDisplay.renderTime(context, CLOCK_WIDTH - 4, INFO_WIDTH, 48); // 传入信息框参数用于居中计算
 
         } finally {
             context.getMatrices().pop();
@@ -109,27 +108,6 @@ public class HudRenderer {
         // 渲染信息框背景
         context.setShaderColor(1.0f, 1.0f, 1.0f, config.backgroundAlpha);
         context.drawTexture(INFO_BG, x, y, 0, 0, INFO_WIDTH, INFO_HEIGHT, INFO_WIDTH, INFO_HEIGHT);
-        context.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-    }
-
-    private void renderConnectors(DrawContext context) {
-        // 计算计数器框的位置（靠右侧）
-        int counterX = CLOCK_WIDTH + INFO_WIDTH - COUNTER_WIDTH;
-        int connectorY = INFO_HEIGHT; // 连接器Y位置（信息框底部）
-
-        // 连接器宽度
-        int connectorWidth = 2;
-
-        // 计算连接器位置（基于计数器框的1/3和2/3位置）
-        // 连接器1：在计数器框左边缘向右1/3宽度处
-        int connector1X = counterX + (COUNTER_WIDTH / 3) - (connectorWidth / 2);
-        // 连接器2：在计数器框左边缘向右2/3宽度处
-        int connector2X = counterX + (COUNTER_WIDTH * 2 / 3) - (connectorWidth / 2);
-
-        // 渲染两个连接器
-        context.setShaderColor(1.0f, 1.0f, 1.0f, config.backgroundAlpha);
-        context.drawTexture(CONNECTOR, connector1X, connectorY, 0, 0, connectorWidth, CONNECTOR_HEIGHT, 2, CONNECTOR_HEIGHT);
-        context.drawTexture(CONNECTOR, connector2X, connectorY, 0, 0, connectorWidth, CONNECTOR_HEIGHT, 2, CONNECTOR_HEIGHT);
         context.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
@@ -164,5 +142,30 @@ public class HudRenderer {
 
     public int getHudHeight() {
         return (int)(TOTAL_HEIGHT * config.scale);
+    }
+
+    // 向其他组件暴露尺寸常量
+    public static int getClockWidth() {
+        return CLOCK_WIDTH;
+    }
+
+    public static int getClockHeight() {
+        return CLOCK_HEIGHT;
+    }
+
+    public static int getInfoWidth() {
+        return INFO_WIDTH;
+    }
+
+    public static int getInfoHeight() {
+        return INFO_HEIGHT;
+    }
+
+    public static int getCounterWidth() {
+        return COUNTER_WIDTH;
+    }
+
+    public static int getCounterHeight() {
+        return COUNTER_HEIGHT;
     }
 }

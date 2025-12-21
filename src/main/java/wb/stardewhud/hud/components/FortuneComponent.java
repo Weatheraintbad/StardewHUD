@@ -31,14 +31,14 @@ public class FortuneComponent {
     public void render(DrawContext context, int x, int y) {
         // 渲染两个运势图标，间距15像素
         renderFortuneIcon(context, fortune1, x, y);
-        renderFortuneIcon(context, fortune2, x + 15, y);
+        renderFortuneIcon(context, fortune2, x + 17, y);
     }
 
     private void renderFortuneIcon(DrawContext context, FortuneType fortune, int x, int y) {
         Identifier iconTexture = getFortuneIcon(fortune);
         if (iconTexture != null) {
             // 直接使用给定的坐标，不进行额外偏移
-            context.drawTexture(iconTexture, x, y, 0, 0, 16, 16, 16, 16);
+            context.drawTexture(iconTexture, x, y, 0, 0, 14, 14, 14, 14);
         }
     }
 

@@ -12,8 +12,8 @@ public class ClockComponent {
     private float currentAngle = 0.0f;
 
     // 时钟尺寸常量
-    private static final int CLOCK_WIDTH = 38;
-    private static final int CLOCK_HEIGHT = 60;
+    private static final int CLOCK_WIDTH = 40;
+    private static final int CLOCK_HEIGHT = 65;
     private static final int CENTER_X = CLOCK_WIDTH; // 圆心在右边框中心
     private static final int CENTER_Y = CLOCK_HEIGHT / 2; // 圆心Y坐标（30）
 
