@@ -21,18 +21,28 @@ public class ModConfig {
 
     // 配置项
     public boolean enabled = true;
-    public HudPosition position = new HudPosition(0, 0); // 默认0,0表示自动定位
+    public HudPosition position = new HudPosition(0, 0); // 默认0,0表示自动定位（右上角）
     public float scale = 1.0f;
-    public float backgroundAlpha = 1.0f;// 背景不透明度
+    public float backgroundAlpha = 1.0f; // 背景不透明度
     public String counterItemId = "minecraft:diamond";
+
+    // 组件可见性
+    public boolean showClock = true;
+    public boolean showTimeDisplay = true;
+    public boolean showWeather = true;
+    public boolean showFortune = true;
+    public boolean showItemCounter = true;
+
+    // 原版效果控制（简化：只保留隐藏选项）
+    public boolean hideVanillaEffects = false; // 是否隐藏原版效果图标
 
     // HUD位置类
     public static class HudPosition {
-        public int x;
-        public int y;
+        public int x; // 从屏幕右侧计算的X坐标
+        public int y; // 从屏幕顶部计算的Y坐标
 
         public HudPosition() {
-            this(20, 20);
+            this(0, 0);
         }
 
         public HudPosition(int x, int y) {
@@ -48,15 +58,25 @@ public class ModConfig {
                 ModConfig loaded = GSON.fromJson(reader, ModConfig.class);
                 this.enabled = loaded.enabled;
                 this.position = loaded.position != null ? loaded.position : new HudPosition();
-                this.scale = loaded.scale;
-                this.backgroundAlpha = loaded.backgroundAlpha;
+                this.scale = Math.max(0.1f, Math.min(loaded.scale, 5.0f));
+                this.backgroundAlpha = Math.max(0.0f, Math.min(loaded.backgroundAlpha, 1.0f));
                 this.counterItemId = loaded.counterItemId != null ? loaded.counterItemId : "minecraft:diamond";
+
+                // 加载组件可见性
+                this.showClock = loaded.showClock;
+                this.showTimeDisplay = loaded.showTimeDisplay;
+                this.showWeather = loaded.showWeather;
+                this.showFortune = loaded.showFortune;
+                this.showItemCounter = loaded.showItemCounter;
+
+                // 加载原版效果控制
+                this.hideVanillaEffects = loaded.hideVanillaEffects;
+
                 LOGGER.info("配置已加载");
             } catch (IOException e) {
                 LOGGER.error("加载配置时出错: ", e);
             }
         } else {
-            // 文件不存在，保存默认配置
             save();
         }
     }

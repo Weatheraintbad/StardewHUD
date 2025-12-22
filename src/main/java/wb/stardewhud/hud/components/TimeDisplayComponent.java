@@ -3,74 +3,72 @@ package wb.stardewhud.hud.components;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.world.World;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.text.Text;
 import wb.stardewhud.StardewHUD;
 import wb.stardewhud.hud.HudRenderer;
 
 public class TimeDisplayComponent {
     private final HudRenderer hudRenderer;
 
-    // 星期名称
-    private static final String[] WEEKDAYS = {"星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"};
+    // 星期名称 - 软编码
+    private static final String[] WEEKDAY_KEYS = {
+            "weekday.stardewhud.monday",
+            "weekday.stardewhud.tuesday",
+            "weekday.stardewhud.wednesday",
+            "weekday.stardewhud.thursday",
+            "weekday.stardewhud.friday",
+            "weekday.stardewhud.saturday",
+            "weekday.stardewhud.sunday"
+    };
 
     // 当前游戏数据
     private int currentDay = 1;
-    private String currentWeekday = "星期一";
+    private String currentWeekdayKey = WEEKDAY_KEYS[0];
     private String currentTime = "00:00";
 
-    // === 简化：使用一个更可靠的检测方法 ===
     private long lastTimeOfDay = -1;
 
     // === 字号控制 ===
     private static final float TEXT_SCALE = 1.1f;
 
-    // === 新增：文字颜色配置 ===
+    // === 文字颜色配置 ===
     private static final int GAME_INFO_TEXT_COLOR = 0x1a1a1a;     // 游戏日和星期文字颜色（黑色）
     private static final int TIME_TEXT_COLOR = 0x1a1a1a;         // 时间文字颜色（黑色）
-    // 颜色参考：
-    // 0x000000 - 黑色
-    // 0xFFFFFF - 白色
-    // 0xFF0000 - 红色
-    // 0x00FF00 - 绿色
-    // 0x0000FF - 蓝色
-    // 0x8B0000 - 深红色（与计数器数字一致）
-    // 0x2F4F4F - 深灰色
 
-    // === 新增：阴影配置 ===
-    private static final boolean ENABLE_GAME_INFO_SHADOW = true; // 游戏日和星期是否启用阴影
+
+    // === 阴影配置 ===
+    private static final boolean ENABLE_GAME_INFO_SHADOW = false; // 游戏日和星期是否启用阴影
     private static final boolean ENABLE_TIME_SHADOW = false;      // 时间是否启用阴影
     private static final int SHADOW_COLOR = 0x808080;             // 阴影颜色（如果启用）
-    // 阴影颜色参考：
-    // 0x000000 - 黑色阴影
-    // 0x808080 - 灰色阴影
-    // 0x404040 - 深灰色阴影
 
     public TimeDisplayComponent(HudRenderer hudRenderer) {
         this.hudRenderer = hudRenderer;
     }
 
     public void renderGameInfo(DrawContext context, int infoBoxStartX, int infoBoxWidth, int y) {
-        String gameInfo = String.format("%d日 %s", currentDay, currentWeekday);
+        // 获取本地化的星期名称
+        String weekdayText = Text.translatable(currentWeekdayKey).getString();
+        // 格式化游戏日信息 - 现在使用本地化的格式
+        String gameInfo = Text.translatable("time.stardewhud.gameDay", currentDay, weekdayText).getString();
 
-        // === 添加infoBoxCenterX计算（更清晰）===
+        // === 添加infoBoxCenterX计算===
         int infoBoxCenterX = calculateInfoBoxCenterX(infoBoxStartX, infoBoxWidth);
         int centeredX = calculateCenteredXForText(context, gameInfo, infoBoxCenterX);
 
-        // === 修改：使用带颜色和阴影配置的绘制方法 ===
+        // === 使用带颜色和阴影配置的绘制方法 ===
         drawTextWithConfig(context, gameInfo, centeredX, y, TEXT_SCALE,
                 GAME_INFO_TEXT_COLOR, ENABLE_GAME_INFO_SHADOW);
     }
 
     public void renderTime(DrawContext context, int infoBoxStartX, int infoBoxWidth, int y) {
-        // === 添加infoBoxCenterX计算（更清晰）===
         int infoBoxCenterX = calculateInfoBoxCenterX(infoBoxStartX, infoBoxWidth);
         int centeredX = calculateCenteredXForText(context, currentTime, infoBoxCenterX);
 
-        // === 修改：使用带颜色和阴影配置的绘制方法 ===
         drawTextWithConfig(context, currentTime, centeredX, y, TEXT_SCALE,
                 TIME_TEXT_COLOR, ENABLE_TIME_SHADOW);
     }
 
-    // === 新增：带配置的文字绘制方法 ===
+    // === 带配置的文字绘制方法 ===
     private void drawTextWithConfig(DrawContext context, String text, int x, int y,
                                     float scale, int textColor, boolean enableShadow) {
         MinecraftClient client = hudRenderer.getClient();
@@ -82,7 +80,7 @@ public class TimeDisplayComponent {
         context.getMatrices().translate(x, y, 0);
         context.getMatrices().scale(scale, scale, 1.0f);
 
-        context.drawText(client.textRenderer, text, 0, 0, textColor, false);
+        context.drawText(client.textRenderer, text, 0, 0, textColor, enableShadow);
 
         // 恢复变换状态
         context.getMatrices().pop();
@@ -113,7 +111,7 @@ public class TimeDisplayComponent {
         drawTextWithConfig(context, text, x, y, scale, GAME_INFO_TEXT_COLOR, ENABLE_GAME_INFO_SHADOW);
     }
 
-    // === 新增：带指定颜色的绘制方法 ===
+    // === 带指定颜色的绘制方法 ===
     private void drawTextWithShadowScaled(DrawContext context, String text, int x, int y, float scale, int color) {
         // 使用指定颜色，默认不启用阴影
         drawTextWithConfig(context, text, x, y, scale, color, false);
@@ -138,7 +136,7 @@ public class TimeDisplayComponent {
             return;
         }
 
-        // === 方法1：直接检测时间回滚（最可靠）===
+        // === 方法1：直接检测时间回滚===
         // 当时间从接近24000（一天结束）跳转到接近0（新的一天开始）
         if (lastTimeOfDay > 23500 && timeOfDay < 500) {
             // 明显的时间回滚，表示新的一天
@@ -160,7 +158,7 @@ public class TimeDisplayComponent {
         // 计算星期（使用模运算确保在正确范围内）
         int weekdayIndex = (currentDay - 1) % 7;
         if (weekdayIndex < 0) weekdayIndex += 7; // 确保非负
-        currentWeekday = WEEKDAYS[weekdayIndex];
+        currentWeekdayKey = WEEKDAY_KEYS[weekdayIndex];
     }
 
     private String formatGameTime(long timeOfDay) {
@@ -173,7 +171,7 @@ public class TimeDisplayComponent {
     public void setCurrentDay(int day) {
         this.currentDay = Math.max(1, day);
         updateWeekday();
-        StardewHUD.LOGGER.info("手动设置天数: 第{}天 {}", currentDay, currentWeekday);
+        StardewHUD.LOGGER.info("手动设置天数: 第{}天", currentDay);
     }
 
     // 获取当前游戏日
@@ -183,27 +181,33 @@ public class TimeDisplayComponent {
 
     // 获取当前星期
     public String getCurrentWeekday() {
-        return currentWeekday;
+        return Text.translatable(currentWeekdayKey).getString();
     }
 
-    // === 新增：获取文字宽度的方法（用于HudRenderer中计算位置）===
+    // 获取当前星期键（用于调试）
+    public String getCurrentWeekdayKey() {
+        return currentWeekdayKey;
+    }
+
+    // === 获取文字宽度的方法（用于HudRenderer中计算位置）===
     public int getTextWidth(DrawContext context, String text) {
         MinecraftClient client = hudRenderer.getClient();
         return client.textRenderer.getWidth(text);
     }
 
-    // === 新增：获取游戏日文字宽度 ===
+    // === 获取游戏日文字宽度 ===
     public int getGameInfoTextWidth(DrawContext context) {
-        String gameInfo = String.format("%d日 %s", currentDay, currentWeekday);
+        String weekdayText = Text.translatable(currentWeekdayKey).getString();
+        String gameInfo = Text.translatable("time.stardewhud.gameDay", currentDay, weekdayText).getString();
         return getTextWidth(context, gameInfo);
     }
 
-    // === 新增：获取时间文字宽度 ===
+    // === 获取时间文字宽度 ===
     public int getTimeTextWidth(DrawContext context) {
         return getTextWidth(context, currentTime);
     }
 
-    // === 新增：获取配置值的方法（用于调试或外部访问）===
+    // === 获取配置值的方法（用于调试或外部访问）===
     public static int getGameInfoTextColor() {
         return GAME_INFO_TEXT_COLOR;
     }

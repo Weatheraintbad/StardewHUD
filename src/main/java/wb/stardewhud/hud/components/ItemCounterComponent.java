@@ -26,10 +26,10 @@ public class ItemCounterComponent {
     private static final float TEXT_SCALE = 1.5f;       // 数字字号缩放因子
 
     // === 字体颜色配置 ===
-    private static final int TEXT_COLOR = 0x8B0000;     // 深红色 (DarkRed)
+    private static final int TEXT_COLOR = 0xFF8B0000;   // 深红色 (DarkRed) - 修复：添加alpha通道FF
 
     // === 阴影颜色配置 ===
-    private static final int SHADOW_COLOR = 0xFFFFFF;
+    private static final int SHADOW_COLOR = 0xFFFFFFFF; // 白色 - 修复：添加alpha通道FF
 
     // === 是否启用阴影 ===
     private static final boolean ENABLE_SHADOW = false;  // 禁用文字阴影
@@ -50,9 +50,14 @@ public class ItemCounterComponent {
     }
 
     public void render(DrawContext context, int x, int y) {
+        // === 使用正确的透明度渲染背景 ===
+        float alpha = hudRenderer.getConfig().backgroundAlpha;
+
         // 渲染计数器背景
-        context.setShaderColor(1.0f, 1.0f, 1.0f, hudRenderer.getConfig().backgroundAlpha);
+        context.setShaderColor(1.0f, 1.0f, 1.0f, alpha);
         context.drawTexture(HudRenderer.COUNTER_BG, x, y, 0, 0, COUNTER_WIDTH, COUNTER_HEIGHT, COUNTER_WIDTH, COUNTER_HEIGHT);
+
+        // === 关键修复：立即重置着色器颜色，避免影响后续渲染 ===
         context.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 
         // 渲染物品图标和数量
@@ -61,7 +66,8 @@ public class ItemCounterComponent {
             int itemX = x + ITEM_LEFT_MARGIN;
             int itemY = y + (COUNTER_HEIGHT - ITEM_ICON_SIZE) / 2 + ITEM_VERTICAL_OFFSET;
 
-            // 渲染物品图标
+            // === 确保物品图标透明度正常 ===
+            // 由于上面已经重置了着色器颜色，物品图标会正常渲染
             ItemStack stack = new ItemStack(item, 1);
             context.drawItem(stack, itemX, itemY);
 
@@ -69,12 +75,9 @@ public class ItemCounterComponent {
             MinecraftClient client = hudRenderer.getClient();
             String countText = String.valueOf(itemCount);
 
-            // === 修复：考虑缩放影响的位置计算 ===
+            // === 考虑缩放影响的位置计算 ===
             int textX = calculateScaledRightAlignedPosition(client, countText, x);
             int textY = y + (COUNTER_HEIGHT - 8) / 2 + 3; // 垂直居中（文字高度约8像素）
-
-            // === 调试：绘制文字边界和参考线 ===
-            // drawDebugVisualizations(context, x, y, textX, textY, countText, client);
 
             // === 应用字号缩放、颜色和阴影 ===
             drawScaledTextWithCustomShadow(context, countText, textX, textY, TEXT_SCALE, TEXT_COLOR, SHADOW_COLOR, ENABLE_SHADOW);
@@ -113,7 +116,6 @@ public class ItemCounterComponent {
         return calculatedX - SCALE_COMPENSATION;
     }
 
-    // === 替代方案：如果上述方法不准，使用这个基于测试的版本 ===
     private int calculateEmpiricalRightAlignedPosition(MinecraftClient client, String text, int counterX) {
         int originalWidth = client.textRenderer.getWidth(text);
         int targetRightEdge = counterX + COUNTER_WIDTH - TEXT_RIGHT_MARGIN;
@@ -147,7 +149,7 @@ public class ItemCounterComponent {
         return targetRightEdge - scaledWidth;
     }
 
-    // === 新增：专门处理缩放文本绘制的方法 ===
+    // === 专门处理缩放文本绘制的方法 ===
     private void drawScaledTextWithCustomShadow(DrawContext context, String text, int x, int y,
                                                 float scale, int textColor, int shadowColor, boolean enableShadow) {
         MinecraftClient client = hudRenderer.getClient();
@@ -155,37 +157,40 @@ public class ItemCounterComponent {
         // 保存当前变换状态
         context.getMatrices().push();
 
-        // 关键：应用缩放，但以文字中心为缩放原点可能更准确
-        // 当前：以文字左上角为原点缩放
-        // 改为以文字中心为原点缩放可能更稳定
-        int textWidth = client.textRenderer.getWidth(text);
+        // === 确保文字渲染使用完全不透明 ===
+        // 重置着色器颜色，避免继承背景的透明度
+        context.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 
-        // 方案A：以左上角为原点（当前方式）
+        // 以左上角为原点（当前方式）
         context.getMatrices().translate(x, y, 0);
         context.getMatrices().scale(scale, scale, 1.0f);
 
-        // 方案B：以文字中心为原点缩放（可能更稳定）- 取消注释测试
-        /*
-        float centerX = x + textWidth / 2.0f;
-        float centerY = y + 4; // 文字高度约8，中心在y+4
-        context.getMatrices().translate(centerX, centerY, 0);
-        context.getMatrices().scale(scale, scale, 1.0f);
-        context.getMatrices().translate(-textWidth / 2.0f, -4, 0);
-        */
-
         if (enableShadow) {
-            context.drawText(client.textRenderer, text, 1, 1, shadowColor, false);
-            context.drawText(client.textRenderer, text, 0, 0, textColor, false);
+            // 确保阴影颜色完全不透明
+            int opaqueShadowColor = shadowColor | 0xFF000000;
+            context.drawText(client.textRenderer, text, 1, 1, opaqueShadowColor, false);
+
+            // 确保文字颜色完全不透明
+            int opaqueTextColor = textColor | 0xFF000000;
+            context.drawText(client.textRenderer, text, 0, 0, opaqueTextColor, false);
         } else {
-            context.drawText(client.textRenderer, text, 0, 0, textColor, false);
+            // 确保文字颜色完全不透明
+            int opaqueTextColor = textColor | 0xFF000000;
+            context.drawText(client.textRenderer, text, 0, 0, opaqueTextColor, false);
         }
 
         // 恢复变换状态
         context.getMatrices().pop();
+
+        // === 额外安全措施：再次重置着色器颜色 ===
+        context.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
 //     === 调试：绘制可视化参考 ===
 //    private void drawDebugVisualizations(DrawContext context, int counterX, int counterY, int textX, int textY, String text, MinecraftClient client) {
+//        // 重置着色器颜色确保调试图形正确显示
+//        context.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+//
 //        int originalWidth = client.textRenderer.getWidth(text);
 //        float scaledWidth = originalWidth * TEXT_SCALE;
 //
@@ -210,11 +215,11 @@ public class ItemCounterComponent {
 //        // 6. 显示详细调试信息
 //        String debugInfo = String.format("'%s' 原始宽:%d 缩放后:%.1f X:%d 目标:%d 补偿:%d",
 //                text, originalWidth, scaledWidth, textX, targetRightEdge, SCALE_COMPENSATION);
-//        context.drawText(client.textRenderer, debugInfo, counterX, counterY - 10, 0xFFFFFF, false);
+//        context.drawText(client.textRenderer, debugInfo, counterX, counterY - 10, 0xFFFFFFFF, false);
 //
 //        // 7. 缩放信息
 //        String scaleInfo = String.format("缩放: %.1fx 计算方式: scaledRightAligned", TEXT_SCALE);
-//        context.drawText(client.textRenderer, scaleInfo, counterX, counterY - 20, 0xFFFFFF, false);
+//        context.drawText(client.textRenderer, scaleInfo, counterX, counterY - 20, 0xFFFFFFFF, false);
 //    }
 
     public void update() {

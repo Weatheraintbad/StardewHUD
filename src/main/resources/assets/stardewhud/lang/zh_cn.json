@@ -1,0 +1,46 @@
+{
+  "title.stardewhud.config": "Stardew HUD 配置",
+
+  "category.stardewhud.general": "通用设置",
+  "category.stardewhud.position": "位置与缩放",
+  "category.stardewhud.visibility": "组件可见性",
+  "category.stardewhud.effects": "原版效果图标",
+
+  "option.stardewhud.enabled": "启用HUD",
+  "option.stardewhud.counterItemId": "计数物品ID",
+  "option.stardewhud.backgroundAlpha": "背景透明度",
+  "option.stardewhud.positionX": "X位置（从右侧起）",
+  "option.stardewhud.positionY": "Y位置（从顶部起）",
+  "option.stardewhud.scalePercent": "缩放（百分比）",
+  "option.stardewhud.showClock": "显示时钟",
+  "option.stardewhud.showTimeDisplay": "显示时间日期",
+  "option.stardewhud.showWeather": "显示天气图标",
+  "option.stardewhud.showFortune": "显示运势图标",
+  "option.stardewhud.showItemCounter": "显示物品计数器",
+  "option.stardewhud.hideVanillaEffects": "隐藏原版效果图标",
+
+  "tip.stardewhud.effects": "控制原版 Minecraft 状态效果显示",
+
+  "tooltip.stardewhud.enabled": "启用或禁用整个HUD显示",
+  "tooltip.stardewhud.counterItemId": "在背包中计数的物品ID（例如：minecraft:diamond）",
+  "tooltip.stardewhud.backgroundAlpha": "背景透明度（0.0 = 完全透明，1.0 = 完全不透明）",
+  "tooltip.stardewhud.positionX": "距离屏幕右侧的距离（0 = 自动定位到右上角）",
+  "tooltip.stardewhud.positionY": "距离屏幕顶部的距离（0 = 自动定位到右上角）",
+  "tooltip.stardewhud.scalePercent": "HUD整体大小（10% 到 500%）",
+  "tooltip.stardewhud.showClock": "显示或隐藏时钟组件",
+  "tooltip.stardewhud.showTimeDisplay": "显示或隐藏时间和日期显示",
+  "tooltip.stardewhud.showWeather": "显示或隐藏天气图标",
+  "tooltip.stardewhud.showFortune": "显示或隐藏运势图标",
+  "tooltip.stardewhud.showItemCounter": "显示或隐藏物品计数器",
+  "tooltip.stardewhud.hideVanillaEffects": "当原版效果图标与HUD重叠时隐藏",
+
+  "weekday.stardewhud.monday": "星期一",
+  "weekday.stardewhud.tuesday": "星期二",
+  "weekday.stardewhud.wednesday": "星期三",
+  "weekday.stardewhud.thursday": "星期四",
+  "weekday.stardewhud.friday": "星期五",
+  "weekday.stardewhud.saturday": "星期六",
+  "weekday.stardewhud.sunday": "星期日",
+
+  "time.stardewhud.gameDay": "%d日 %s"
+}

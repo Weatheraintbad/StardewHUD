@@ -14,9 +14,14 @@
   "entrypoints": {
     "client": [
       "wb.stardewhud.StardewHUD"
+    ],
+    "modmenu": [
+      "wb.stardewhud.config.ModMenuIntegration"
     ]
   },
-  "mixins": [],
+  "mixins": [
+    "stardewhud.mixins.json"
+  ],
   "depends": {
     "fabricloader": ">=0.16.14",
     "fabric-api": "*",
