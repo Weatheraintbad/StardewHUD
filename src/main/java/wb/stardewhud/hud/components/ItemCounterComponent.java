@@ -11,7 +11,8 @@ import wb.stardewhud.hud.HudRenderer;
 
 public class ItemCounterComponent {
     private final HudRenderer hudRenderer;
-    private final String itemId;
+    // 移除final修饰符，允许更新
+    private String itemId;
 
     private Item item;
     private int itemCount = 0;
@@ -45,11 +46,18 @@ public class ItemCounterComponent {
 
     public ItemCounterComponent(HudRenderer hudRenderer, String itemId) {
         this.hudRenderer = hudRenderer;
-        this.itemId = itemId;
+        this.itemId = itemId; // 不再是final
         parseItemId();
     }
 
     public void render(DrawContext context, int x, int y) {
+        // 在渲染前检查配置是否已更新
+        String configItemId = StardewHUD.getConfig().counterItemId;
+        if (!configItemId.equals(this.itemId)) {
+            this.itemId = configItemId;
+            parseItemId(); // 重新解析物品ID
+        }
+
         // === 使用正确的透明度渲染背景 ===
         float alpha = hudRenderer.getConfig().backgroundAlpha;
 
@@ -223,12 +231,18 @@ public class ItemCounterComponent {
 //    }
 
     public void update() {
+        // 在更新时也检查配置
+        String configItemId = StardewHUD.getConfig().counterItemId;
+        if (!configItemId.equals(this.itemId)) {
+            this.itemId = configItemId;
+        }
         parseItemId();
         countItemsInInventory();
     }
 
     private void parseItemId() {
         try {
+            // 使用当前存储的itemId
             Identifier id = Identifier.tryParse(itemId);
             if (id != null && Registries.ITEM.containsId(id)) {
                 item = Registries.ITEM.get(id);
@@ -265,9 +279,10 @@ public class ItemCounterComponent {
     }
 
     public void setItemId(String newItemId) {
-        if (!newItemId.equals(this.itemId)) {
-            StardewHUD.getConfig().counterItemId = newItemId;
-            parseItemId();
-        }
+        // 直接更新配置，不再与this.itemId比较
+        StardewHUD.getConfig().counterItemId = newItemId;
+        // 立即应用更改
+        this.itemId = newItemId;
+        parseItemId();
     }
 }
