@@ -3,12 +3,12 @@
   "id": "stardewhud",
   "version": "1.0.0",
   "name": "StardewHUD",
-  "description": "一个星露谷物语风格的HUD模组，显示时间、天气、运势和物品计数器",
+  "description": "一个星露谷物语风格的HUD模组，可显示时间、天气、运势和物品计数器",
   "authors": ["Weatheraintbad"],
   "contact": {
     "sources": "https://github.com/Weatheraintbad/stardewhud"
   },
-  "license": "MIT",
+  "license": "CC0-1.0",
   "icon": "assets/stardewhud/icon.png",
   "environment": "client",
   "entrypoints": {
