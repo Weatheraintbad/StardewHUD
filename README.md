@@ -1,29 +1,40 @@
 <div align="center">
-
-  ### 为我的世界添加类似星露谷物语的HUD显示组件（开发中）
-
-  Adds a stardew-style HUD display for Minecraft (under development)
-
-  目前开发进度:
   
-  <img width="262" height="201" alt="1d8f760eb58e810f4295631fc9da13d4" src="https://github.com/user-attachments/assets/5a915a3f-8a6c-4fab-b71c-406f75823f1f" /><br>
+  <img width="2310" height="528" alt="screenshot (11)" src="https://github.com/user-attachments/assets/16a7394c-6679-4281-9e2b-11740b0bad16" />
+
+  ### 为我的世界添加星露谷物语的HUD显示组件！
+
+  Adds a stardew-style HUD display for Minecraft!
   
-  <img width="255" height="207" alt="e57c2be8437a7233bcd4950710beb915" src="https://github.com/user-attachments/assets/21292ff4-2263-44e2-9d63-4c7efd0675c9" /><br>
-
-<img width="262" height="211" alt="微信图片_20251221161415_331_58" src="https://github.com/user-attachments/assets/0ef2dee6-e5f1-44d0-ba37-8e832b4f3407" /><br>
-
-<img width="259" height="204" alt="微信图片_20251221153404_322_58" src="https://github.com/user-attachments/assets/3f04109f-79fd-4a38-aec6-9ef60b7396f3" /><br>
-
-<img width="260" height="194" alt="微信图片_20251221140441_318_58" src="https://github.com/user-attachments/assets/e4067472-689e-4bd9-8843-e821476627f6" /><br>
-
-<img width="255" height="197" alt="微信图片_20251221134631_317_58" src="https://github.com/user-attachments/assets/5b082ee3-f1cc-49d7-84bb-a1645fddb6d7" /><br>
-
-<img width="255" height="197" alt="微信图片_20251221013517_316_58" src="https://github.com/user-attachments/assets/33425431-6637-4376-9cf3-844ba3ea0e97" /><br>
-
-<img width="269" height="206" alt="微信图片_20251220202211_315_58" src="https://github.com/user-attachments/assets/c9940125-b394-4477-9072-a5317005ec2f" /><br>
-
-<img width="400" height="200" alt="微信图片_20251221191710_338_58" src="https://github.com/user-attachments/assets/7405b2c3-5dd9-45bf-9c0b-6535566923f5" /><br>
-
-<img width="400" height="200" alt="微信图片_20251221191709_337_58" src="https://github.com/user-attachments/assets/7417af88-947d-491d-9761-e1e11f4d25aa" />
+  <img width="300" height="244" alt="a771592072b8f90c8b622fb09696b589" src="https://github.com/user-attachments/assets/a8a927c1-b873-4870-8f4f-f13ee1d9251e" />
 
 </div>
+
+### 在游戏界面的右上角显示类似星露谷物语的HUD组件，内容包括时钟、游戏日、星期、当日时间、天气、自定义物品计数器，以及可以与每日运势联动的运势信息显示！
+In the upper right corner of the game interface, a Stardew Valley-like HUD component is displayed, including a clock, game day, day, time of day, weather, custom item counter, and a display of fortune information that can be linked to [Every Single Day](https://github.com/Weatheraintbad/EverySingleDay)!
+
+### 提供可高度自定义的配置界面
+Highly customizable configuration interface<br>
+
+可配置的选项 / Configurable options：
+1. 是否启用HUD / Whether to enable the HUD
+2. 自定义物品id，用于计数 / Custom item ID for counting
+3. HUD透明度 / HUD transparency
+4. HUD位置及缩放大小 / HUD position and zoom size
+5. 各组件独立开关 / Individual switches for each component
+6. 是否隐藏原版效果图标 / Hide vanilla effect icon
+
+<div align="center">
+
+<img width="500" height="279" alt="3f7aa3ac2c1f4d0646e88c76ef14d3ae" src="https://github.com/user-attachments/assets/c90c1035-e841-4786-a357-db9f54bbdccf" />
+<img width="500" height="279" alt="4de001453939436433b2927527e8fd75" src="https://github.com/user-attachments/assets/a74cdfec-df22-4e11-906f-7290ac829067" />
+<img width="500" height="279" alt="e2f6547ea9dcbb611c073de7ff8e8f57" src="https://github.com/user-attachments/assets/6cb73156-0504-486f-90cd-f1ca40f95771" />
+<img width="500" height="279" alt="20ceb52b55c7b6dc49884741b1a3a4ed" src="https://github.com/user-attachments/assets/eced27cd-b132-4036-bd2e-1063de724e83" />
+
+</div>
+
+### 目前支持的版本：
+
+Fabric 1.20.1（需要 Fabric Loader 0.16.14 以及上版本，Modmenu 7.2.2 及以上版本，Fabric API任意版本）。
+
+(requires Fabric Loader 0.16.14 or higher, Modmenu 7.2.2 or higher，any version of Fabric API).
