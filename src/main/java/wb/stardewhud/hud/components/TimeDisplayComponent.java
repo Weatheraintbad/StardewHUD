@@ -4,6 +4,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.world.World;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
+import net.minecraft.client.network.ClientPlayerEntity;
 import wb.stardewhud.StardewHUD;
 import wb.stardewhud.hud.HudRenderer;
 
@@ -22,11 +23,12 @@ public class TimeDisplayComponent {
     };
 
     // 当前游戏数据
-    private int currentDay = 1;
+    private long currentDay = 1; // 从1开始
     private String currentWeekdayKey = WEEKDAY_KEYS[0];
     private String currentTime = "00:00";
 
-    private long lastTimeOfDay = -1;
+    // 存储当前游戏日的时间刻度基准
+    private long lastCalculatedDay = -1; // 记录上一次计算的游戏日（从0开始）
 
     // === 字号控制 ===
     private static final float TEXT_SCALE = 1.1f;
@@ -34,7 +36,6 @@ public class TimeDisplayComponent {
     // === 文字颜色配置 ===
     private static final int GAME_INFO_TEXT_COLOR = 0x1a1a1a;     // 游戏日和星期文字颜色（黑色）
     private static final int TIME_TEXT_COLOR = 0x1a1a1a;         // 时间文字颜色（黑色）
-
 
     // === 阴影配置 ===
     private static final boolean ENABLE_GAME_INFO_SHADOW = false; // 游戏日和星期是否启用阴影
@@ -123,40 +124,58 @@ public class TimeDisplayComponent {
         long timeOfDay = world.getTimeOfDay();
         currentTime = formatGameTime(timeOfDay);
 
-        // === 简化且更可靠的天数检测方法 ===
-        detectNewDaySimple(timeOfDay);
+        // === 使用正确的游戏日识别方法 ===
+        updateCurrentDay(timeOfDay);
 
         // 更新星期显示（每次update都更新，确保同步）
         updateWeekday();
     }
 
-    private void detectNewDaySimple(long timeOfDay) {
-        if (lastTimeOfDay == -1) {
-            lastTimeOfDay = timeOfDay;
-            return;
-        }
+    /**
+     * 更新当前游戏日 - 正确计算游戏日
+     * 参考：world.getTimeOfDay() / 24000L 得到从0开始的天数
+     * 显示时加1，从第1天开始显示
+     */
+    private void updateCurrentDay(long timeOfDay) {
+        // 计算当前游戏日（从0开始）
+        long dayFromTicks = timeOfDay / 24000L;
 
-        // === 方法1：直接检测时间回滚===
-        // 当时间从接近24000（一天结束）跳转到接近0（新的一天开始）
-        if (lastTimeOfDay > 23500 && timeOfDay < 500) {
-            // 明显的时间回滚，表示新的一天
-            currentDay++;
-            StardewHUD.LOGGER.info("检测到时间回滚，新的一天开始: 第{}天", currentDay);
-        }
-        // === 方法2：检测时间跳跃（使用/time命令时）===
-        else if (Math.abs(timeOfDay - lastTimeOfDay) > 12000) {
-            // 时间跳跃超过半天，可能使用命令改变了时间
-            // 简单处理：增加一天
-            currentDay++;
-            StardewHUD.LOGGER.info("检测到时间跳跃，增加一天: 第{}天", currentDay);
-        }
+        // 如果计算的天数与之前记录的不同，说明天数发生了变化
+        if (dayFromTicks != lastCalculatedDay) {
+            // 第一次初始化或天数发生变化
+            if (lastCalculatedDay == -1) {
+                // 第一次计算，直接设置当前日
+                // dayFromTicks是从0开始的，所以显示时需要加1
+                currentDay = dayFromTicks;
+                StardewHUD.LOGGER.info("初始化游戏日: 第{}天 (游戏时间: {}, 计算天数: {})",
+                        currentDay, timeOfDay, dayFromTicks);
+            } else {
+                // 天数增加
+                long dayDifference = dayFromTicks - lastCalculatedDay;
+                if (dayDifference > 0) {
+                    // 天数增加，需要同步更新显示的currentDay
+                    currentDay += dayDifference;
+                    StardewHUD.LOGGER.info("检测到新的一天: 第{}天 (增加{}天, 计算天数: {})",
+                            currentDay, dayDifference, dayFromTicks);
+                } else if (dayDifference < 0) {
+                    // 时间倒流（可能是使用命令或重新加载世界）
+                    // 我们根据新的计算天数重新设置
+                    currentDay = dayFromTicks;
+                    if (currentDay < 1) currentDay = 1; // 确保不小于1
+                    StardewHUD.LOGGER.warn("检测到时间倒流，重新设置游戏日: 第{}天 (计算天数: {})",
+                            currentDay, dayFromTicks);
+                }
+            }
 
-        lastTimeOfDay = timeOfDay;
+            // 更新记录的计算天数
+            lastCalculatedDay = dayFromTicks;
+        }
     }
 
     private void updateWeekday() {
         // 计算星期（使用模运算确保在正确范围内）
-        int weekdayIndex = (currentDay - 1) % 7;
+        // currentDay从1开始，所以减1得到索引
+        int weekdayIndex = (int) ((currentDay - 1) % 7);
         if (weekdayIndex < 0) weekdayIndex += 7; // 确保非负
         currentWeekdayKey = WEEKDAY_KEYS[weekdayIndex];
     }
@@ -168,14 +187,29 @@ public class TimeDisplayComponent {
     }
 
     // 强制设置游戏日（用于测试）
-    public void setCurrentDay(int day) {
+    public void setCurrentDay(long day) {
         this.currentDay = Math.max(1, day);
+        // 重置计算天数，以便下次update时重新计算
+        this.lastCalculatedDay = 0;
         updateWeekday();
         StardewHUD.LOGGER.info("手动设置天数: 第{}天", currentDay);
     }
 
+    // 强制同步游戏日到世界时间（用于确保一致性）
+    public void syncWithWorldTime(World world) {
+        if (world == null) return;
+
+        long timeOfDay = world.getTimeOfDay();
+        long dayFromTicks = timeOfDay / 24000L;
+        this.currentDay = dayFromTicks; // 从0开始显示
+        this.lastCalculatedDay = dayFromTicks;
+        updateWeekday();
+        StardewHUD.LOGGER.info("同步游戏日到世界时间: 第{}天 (游戏时间: {}, 计算天数: {})",
+                currentDay, timeOfDay, dayFromTicks);
+    }
+
     // 获取当前游戏日
-    public int getCurrentDay() {
+    public long getCurrentDay() {
         return currentDay;
     }
 
