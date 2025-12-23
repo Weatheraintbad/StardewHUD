@@ -115,10 +115,10 @@ public class HudRenderer {
                 // 渲染时间显示
                 if (config.showTimeDisplay) {
                     // 第一层日期显示水平居中
-                    timeDisplay.renderGameInfo(context, CLOCK_WIDTH, INFO_WIDTH, 10);
+                    timeDisplay.renderGameInfo(context, CLOCK_WIDTH - 1, INFO_WIDTH - 4, 11);
 
                     // 第三层时间显示水平居中
-                    timeDisplay.renderTime(context, CLOCK_WIDTH - 4, INFO_WIDTH, 48);
+                    timeDisplay.renderTime(context, CLOCK_WIDTH - 3, INFO_WIDTH, 48);
                 }
             }
 

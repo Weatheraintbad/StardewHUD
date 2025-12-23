@@ -34,13 +34,13 @@
   "tooltip.stardewhud.showItemCounter": "Show or hide the item counter",
   "tooltip.stardewhud.hideVanillaEffects": "Hide vanilla status effects when they overlap with the HUD",
 
-  "weekday.stardewhud.monday": "Monday",
-  "weekday.stardewhud.tuesday": "Tuesday",
-  "weekday.stardewhud.wednesday": "Wednesday",
-  "weekday.stardewhud.thursday": "Thursday",
-  "weekday.stardewhud.friday": "Friday",
-  "weekday.stardewhud.saturday": "Saturday",
-  "weekday.stardewhud.sunday": "Sunday",
+  "weekday.stardewhud.monday": "Mon",
+  "weekday.stardewhud.tuesday": "Tue",
+  "weekday.stardewhud.wednesday": "Wed",
+  "weekday.stardewhud.thursday": "Thu",
+  "weekday.stardewhud.friday": "Fri",
+  "weekday.stardewhud.saturday": "Sat",
+  "weekday.stardewhud.sunday": "Sun",
 
-  "time.stardewhud.gameDay": "Day %d %s"
+  "time.stardewhud.gameDay": "D %d %s"
 }

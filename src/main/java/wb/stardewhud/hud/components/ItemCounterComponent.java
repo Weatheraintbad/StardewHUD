@@ -30,8 +30,8 @@ public class ItemCounterComponent {
     private final int COUNTER_HEIGHT = HudRenderer.getCounterHeight();
 
     // === 边距常量 ===
-    private static final int ITEM_LEFT_MARGIN = 8;      // 物品图标左侧边距
-    private static final int TEXT_RIGHT_MARGIN = 7;    // 个位数最右侧与计数器栏最右侧的距离
+    private static final int ITEM_LEFT_MARGIN = 9;      // 物品图标左侧边距
+    private static final int TEXT_RIGHT_MARGIN = 8;    // 个位数最右侧与计数器栏最右侧的距离
     private static final float TEXT_SCALE = 1.5f;       // 数字字号缩放因子
 
     // === 字体颜色配置 ===
