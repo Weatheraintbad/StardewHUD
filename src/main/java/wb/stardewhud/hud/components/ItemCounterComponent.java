@@ -10,9 +10,6 @@ import net.minecraft.inventory.SimpleInventory;
 import wb.stardewhud.StardewHUD;
 import wb.stardewhud.hud.HudRenderer;
 
-// 需要导入钱袋相关的类 - 请根据您的mod实际包名调整
-// import yoscoins.item.MoneyPouchItem;
-// import yoscoins.item.YosCoinsItems;
 
 public class ItemCounterComponent {
     private final HudRenderer hudRenderer;
@@ -229,97 +226,63 @@ public class ItemCounterComponent {
      * 公式：铜币总数 = 现有铜币 + 9 × 现有银币 + 81 × 现有金币
      */
     private void calculateTotalCopperValue(MinecraftClient mc) {
-        int copperCount = 0;
-        int silverCount = 0;
-        int goldCount = 0;
+        // 使用数组来跟踪计数，便于传递和修改
+        int[] counts = new int[3]; // 索引：0=铜币, 1=银币, 2=金币
 
-        // 统计散装钱币
-        copperCount = countCoinsInSlots(mc.player.getInventory().main, COPPER_COIN_ID, copperCount);
-        silverCount = countCoinsInSlots(mc.player.getInventory().main, SILVER_COIN_ID, silverCount);
-        goldCount = countCoinsInSlots(mc.player.getInventory().main, GOLD_COIN_ID, goldCount);
-
-        copperCount = countCoinsInSlots(mc.player.getInventory().offHand, COPPER_COIN_ID, copperCount);
-        silverCount = countCoinsInSlots(mc.player.getInventory().offHand, SILVER_COIN_ID, silverCount);
-        goldCount = countCoinsInSlots(mc.player.getInventory().offHand, GOLD_COIN_ID, goldCount);
-
-        copperCount = countCoinsInSlots(mc.player.getInventory().armor, COPPER_COIN_ID, copperCount);
-        silverCount = countCoinsInSlots(mc.player.getInventory().armor, SILVER_COIN_ID, silverCount);
-        goldCount = countCoinsInSlots(mc.player.getInventory().armor, GOLD_COIN_ID, goldCount);
-
-        // 统计钱袋内的钱币
-        countAllCoinsInMoneyPouches(mc, copperCount, silverCount, goldCount);
+        // 统计所有槽位
+        counts = countCoinsInSlots(mc.player.getInventory().main, counts);
+        counts = countCoinsInSlots(mc.player.getInventory().offHand, counts);
+        counts = countCoinsInSlots(mc.player.getInventory().armor, counts);
 
         // 计算铜币总量：铜币 + 9×银币 + 81×金币
-        itemCount = copperCount + (9 * silverCount) + (81 * goldCount);
+        itemCount = counts[0] + (9 * counts[1]) + (81 * counts[2]);
 
         StardewHUD.LOGGER.debug("货币统计 - 铜币: {}, 银币: {}, 金币: {}, 换算铜币总数: {}",
-                copperCount, silverCount, goldCount, itemCount);
+                counts[0], counts[1], counts[2], itemCount);
     }
 
     /**
-     * 统计指定槽位中指定类型的钱币
+     * 统计指定槽位中的所有钱币（包括钱袋内的）
+     * @param currentCounts 当前计数数组 [铜币, 银币, 金币]
+     * @return 更新后的计数数组
      */
-    private int countCoinsInSlots(Iterable<ItemStack> slots, String coinType, int currentCount) {
-        int count = currentCount;
+    private int[] countCoinsInSlots(Iterable<ItemStack> slots, int[] currentCounts) {
+        // 复制当前计数以避免修改原数组
+        int[] counts = new int[] {currentCounts[0], currentCounts[1], currentCounts[2]};
+
         for (ItemStack stack : slots) {
             if (stack.isEmpty()) continue;
 
             String itemIdString = Registries.ITEM.getId(stack.getItem()).toString();
-            if (itemIdString.equals(coinType)) {
-                count += stack.getCount();
-            }
-        }
-        return count;
-    }
 
-    /**
-     * 统计所有钱袋内的钱币
-     */
-    private void countAllCoinsInMoneyPouches(MinecraftClient mc, int copperCount, int silverCount, int goldCount) {
-        // 检查主物品栏中的钱袋
-        for (ItemStack stack : mc.player.getInventory().main) {
-            if (isMoneyPouch(stack)) {
-                int[] counts = countCoinsInPouch(stack);
-                copperCount += counts[0];
-                silverCount += counts[1];
-                goldCount += counts[2];
-            }
-        }
+            if (itemIdString.equals(COPPER_COIN_ID)) {
+                counts[0] += stack.getCount();
+            } else if (itemIdString.equals(SILVER_COIN_ID)) {
+                counts[1] += stack.getCount();
+            } else if (itemIdString.equals(GOLD_COIN_ID)) {
+                counts[2] += stack.getCount();
+            } else if (itemIdString.equals(MONEY_POUCH_ID)) {
+                // 统计钱袋内的钱币
+                SimpleInventory pouch = readMoneyPouchInventory(stack);
+                if (pouch != null) {
+                    for (ItemStack pouchItem : pouch.stacks) {
+                        if (!pouchItem.isEmpty()) {
+                            String pouchItemId = Registries.ITEM.getId(pouchItem.getItem()).toString();
+                            int count = pouchItem.getCount();
 
-        // 检查副手物品栏中的钱袋
-        for (ItemStack stack : mc.player.getInventory().offHand) {
-            if (isMoneyPouch(stack)) {
-                int[] counts = countCoinsInPouch(stack);
-                copperCount += counts[0];
-                silverCount += counts[1];
-                goldCount += counts[2];
-            }
-        }
-    }
-
-    /**
-     * 统计单个钱袋内的钱币
-     * @return 数组 [铜币数量, 银币数量, 金币数量]
-     */
-    private int[] countCoinsInPouch(ItemStack pouchStack) {
-        int[] counts = new int[3]; // [铜币, 银币, 金币]
-        SimpleInventory pouch = readMoneyPouchInventory(pouchStack);
-        if (pouch != null) {
-            for (ItemStack pouchItem : pouch.stacks) {
-                if (!pouchItem.isEmpty()) {
-                    String itemIdString = Registries.ITEM.getId(pouchItem.getItem()).toString();
-                    int count = pouchItem.getCount();
-
-                    if (itemIdString.equals(COPPER_COIN_ID)) {
-                        counts[0] += count;
-                    } else if (itemIdString.equals(SILVER_COIN_ID)) {
-                        counts[1] += count;
-                    } else if (itemIdString.equals(GOLD_COIN_ID)) {
-                        counts[2] += count;
+                            if (pouchItemId.equals(COPPER_COIN_ID)) {
+                                counts[0] += count;
+                            } else if (pouchItemId.equals(SILVER_COIN_ID)) {
+                                counts[1] += count;
+                            } else if (pouchItemId.equals(GOLD_COIN_ID)) {
+                                counts[2] += count;
+                            }
+                        }
                     }
                 }
             }
         }
+
         return counts;
     }
 
@@ -383,19 +346,28 @@ public class ItemCounterComponent {
 
     /* 读取钱袋内部物品栏 - 需要根据实际的钱袋API实现 */
     private SimpleInventory readMoneyPouchInventory(ItemStack moneyPouch) {
-        try {
-            // 方法1：如果钱袋模组提供了静态方法（参考示例）
-            // return MoneyPouchItem.readInv(moneyPouch);
+        if (moneyPouch.isEmpty()) return null;
 
-            // 方法2：通过反射调用（更通用）
-            Class<?> moneyPouchClass = Class.forName("yoscoins.item.MoneyPouchItem");
-            java.lang.reflect.Method readInvMethod = moneyPouchClass.getMethod("readInv", ItemStack.class);
-            return (SimpleInventory) readInvMethod.invoke(null, moneyPouch);
+        try {
+            // 方法1：尝试通过反射调用钱袋API
+            try {
+                Class<?> moneyPouchClass = Class.forName("yoscoins.item.MoneyPouchItem");
+                java.lang.reflect.Method readInvMethod = moneyPouchClass.getMethod("readInv", ItemStack.class);
+                Object result = readInvMethod.invoke(null, moneyPouch);
+                if (result instanceof SimpleInventory) {
+                    return (SimpleInventory) result;
+                }
+            } catch (ClassNotFoundException | NoSuchMethodException e) {
+                // API不可用，尝试NBT方式
+                StardewHUD.LOGGER.debug("钱袋API不可用，尝试NBT方式: {}", e.getMessage());
+            }
+
+            // 方法2：通过NBT直接读取
+            return readMoneyPouchFromNBT(moneyPouch);
 
         } catch (Exception e) {
-            // 方法3：如果以上方法都失败，尝试使用NBT直接读取
-            StardewHUD.LOGGER.debug("无法通过API读取钱袋内容，尝试NBT方式: {}", e.getMessage());
-            return readMoneyPouchFromNBT(moneyPouch);
+            StardewHUD.LOGGER.warn("读取钱袋内容失败: {}", e.getMessage());
+            return null;
         }
     }
 
@@ -406,8 +378,6 @@ public class ItemCounterComponent {
         }
 
         try {
-            // 钱袋的NBT结构可能不同，这里是一个通用示例
-            // 实际需要根据YosCoins模组的NBT结构调整
             net.minecraft.nbt.NbtCompound nbt = moneyPouch.getNbt();
             if (nbt != null && nbt.contains("Items")) {
                 net.minecraft.nbt.NbtList itemList = nbt.getList("Items", net.minecraft.nbt.NbtElement.COMPOUND_TYPE);
