@@ -52,6 +52,12 @@ public class ItemCounterComponent {
     // === 新增：缩放补偿偏移 ===
     private static final int SCALE_COMPENSATION = 4;    // 缩放导致的额外偏移补偿值
 
+    // 钱币物品ID常量
+    private static final String COPPER_COIN_ID = "yoscoins:copper_coin";
+    private static final String SILVER_COIN_ID = "yoscoins:silver_coin";
+    private static final String GOLD_COIN_ID = "yoscoins:gold_coin";
+    private static final String MONEY_POUCH_ID = "yoscoins:money_pouch";
+
     public ItemCounterComponent(HudRenderer hudRenderer, String itemId) {
         this.hudRenderer = hudRenderer;
         this.itemId = itemId; // 不再是final
@@ -196,16 +202,125 @@ public class ItemCounterComponent {
         // 重置计数器
         itemCount = 0;
 
-        /* 统计所有物品栏槽位（散装物品） */
-        countItemsInInventorySlots(mc.player.getInventory().main);
-        countItemsInInventorySlots(mc.player.getInventory().offHand);
-        countItemsInInventorySlots(mc.player.getInventory().armor);
+        // 检查是否是铜币
+        String itemIdString = Registries.ITEM.getId(item).toString();
+        boolean isCountingCopper = itemIdString.equals(COPPER_COIN_ID);
 
-        /* 统计钱袋内的物品（如果当前统计的物品是钱币） */
-        // 检查是否是钱币类物品
-        if (isCoinItem()) {
-            countItemsInMoneyPouches(mc);
+        if (isCountingCopper) {
+            // 当统计铜币时，计算所有货币换算成铜币的总量
+            calculateTotalCopperValue(mc);
+        } else {
+            // 其他物品按原有逻辑统计
+            /* 统计所有物品栏槽位（散装物品） */
+            countItemsInInventorySlots(mc.player.getInventory().main);
+            countItemsInInventorySlots(mc.player.getInventory().offHand);
+            countItemsInInventorySlots(mc.player.getInventory().armor);
+
+            /* 统计钱袋内的物品（如果当前统计的物品是钱币） */
+            // 检查是否是钱币类物品
+            if (isCoinItem()) {
+                countItemsInMoneyPouches(mc);
+            }
         }
+    }
+
+    /**
+     * 计算所有货币换算成铜币的总量
+     * 公式：铜币总数 = 现有铜币 + 9 × 现有银币 + 81 × 现有金币
+     */
+    private void calculateTotalCopperValue(MinecraftClient mc) {
+        int copperCount = 0;
+        int silverCount = 0;
+        int goldCount = 0;
+
+        // 统计散装钱币
+        copperCount = countCoinsInSlots(mc.player.getInventory().main, COPPER_COIN_ID, copperCount);
+        silverCount = countCoinsInSlots(mc.player.getInventory().main, SILVER_COIN_ID, silverCount);
+        goldCount = countCoinsInSlots(mc.player.getInventory().main, GOLD_COIN_ID, goldCount);
+
+        copperCount = countCoinsInSlots(mc.player.getInventory().offHand, COPPER_COIN_ID, copperCount);
+        silverCount = countCoinsInSlots(mc.player.getInventory().offHand, SILVER_COIN_ID, silverCount);
+        goldCount = countCoinsInSlots(mc.player.getInventory().offHand, GOLD_COIN_ID, goldCount);
+
+        copperCount = countCoinsInSlots(mc.player.getInventory().armor, COPPER_COIN_ID, copperCount);
+        silverCount = countCoinsInSlots(mc.player.getInventory().armor, SILVER_COIN_ID, silverCount);
+        goldCount = countCoinsInSlots(mc.player.getInventory().armor, GOLD_COIN_ID, goldCount);
+
+        // 统计钱袋内的钱币
+        countAllCoinsInMoneyPouches(mc, copperCount, silverCount, goldCount);
+
+        // 计算铜币总量：铜币 + 9×银币 + 81×金币
+        itemCount = copperCount + (9 * silverCount) + (81 * goldCount);
+
+        StardewHUD.LOGGER.debug("货币统计 - 铜币: {}, 银币: {}, 金币: {}, 换算铜币总数: {}",
+                copperCount, silverCount, goldCount, itemCount);
+    }
+
+    /**
+     * 统计指定槽位中指定类型的钱币
+     */
+    private int countCoinsInSlots(Iterable<ItemStack> slots, String coinType, int currentCount) {
+        int count = currentCount;
+        for (ItemStack stack : slots) {
+            if (stack.isEmpty()) continue;
+
+            String itemIdString = Registries.ITEM.getId(stack.getItem()).toString();
+            if (itemIdString.equals(coinType)) {
+                count += stack.getCount();
+            }
+        }
+        return count;
+    }
+
+    /**
+     * 统计所有钱袋内的钱币
+     */
+    private void countAllCoinsInMoneyPouches(MinecraftClient mc, int copperCount, int silverCount, int goldCount) {
+        // 检查主物品栏中的钱袋
+        for (ItemStack stack : mc.player.getInventory().main) {
+            if (isMoneyPouch(stack)) {
+                int[] counts = countCoinsInPouch(stack);
+                copperCount += counts[0];
+                silverCount += counts[1];
+                goldCount += counts[2];
+            }
+        }
+
+        // 检查副手物品栏中的钱袋
+        for (ItemStack stack : mc.player.getInventory().offHand) {
+            if (isMoneyPouch(stack)) {
+                int[] counts = countCoinsInPouch(stack);
+                copperCount += counts[0];
+                silverCount += counts[1];
+                goldCount += counts[2];
+            }
+        }
+    }
+
+    /**
+     * 统计单个钱袋内的钱币
+     * @return 数组 [铜币数量, 银币数量, 金币数量]
+     */
+    private int[] countCoinsInPouch(ItemStack pouchStack) {
+        int[] counts = new int[3]; // [铜币, 银币, 金币]
+        SimpleInventory pouch = readMoneyPouchInventory(pouchStack);
+        if (pouch != null) {
+            for (ItemStack pouchItem : pouch.stacks) {
+                if (!pouchItem.isEmpty()) {
+                    String itemIdString = Registries.ITEM.getId(pouchItem.getItem()).toString();
+                    int count = pouchItem.getCount();
+
+                    if (itemIdString.equals(COPPER_COIN_ID)) {
+                        counts[0] += count;
+                    } else if (itemIdString.equals(SILVER_COIN_ID)) {
+                        counts[1] += count;
+                    } else if (itemIdString.equals(GOLD_COIN_ID)) {
+                        counts[2] += count;
+                    }
+                }
+            }
+        }
+        return counts;
     }
 
     /* 统计普通物品栏槽位 */
@@ -254,16 +369,16 @@ public class ItemCounterComponent {
     private boolean isCoinItem() {
         // 根据YosCoins模组的物品ID判断
         String itemIdString = Registries.ITEM.getId(item).toString();
-        return itemIdString.equals("yoscoins:copper_coin") ||
-                itemIdString.equals("yoscoins:silver_coin") ||
-                itemIdString.equals("yoscoins:gold_coin");
+        return itemIdString.equals(COPPER_COIN_ID) ||
+                itemIdString.equals(SILVER_COIN_ID) ||
+                itemIdString.equals(GOLD_COIN_ID);
     }
 
     /* 检查是否是钱袋物品 */
     private boolean isMoneyPouch(ItemStack stack) {
         if (stack.isEmpty()) return false;
         String itemIdString = Registries.ITEM.getId(stack.getItem()).toString();
-        return itemIdString.equals("yoscoins:money_pouch");
+        return itemIdString.equals(MONEY_POUCH_ID);
     }
 
     /* 读取钱袋内部物品栏 - 需要根据实际的钱袋API实现 */
