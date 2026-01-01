@@ -13,13 +13,10 @@ import wb.stardewhud.hud.HudRenderer;
 
 public class ItemCounterComponent {
     private final HudRenderer hudRenderer;
-    // 移除final修饰符，允许更新
     private String itemId;
-
     private Item item;
     private int itemCount = 0;
 
-    // 添加：强制重新统计的标志
     private int lastSnapTick = -1;
 
     // 使用HudRenderer中的常量
@@ -61,7 +58,6 @@ public class ItemCounterComponent {
         parseItemId();
     }
 
-    /* 对外接口：强制重新统计 */
     public void markInventoryChanged() {
         lastSnapTick = -1;   // 强制下一帧重新统计
     }
@@ -74,14 +70,10 @@ public class ItemCounterComponent {
             parseItemId(); // 重新解析物品ID
         }
 
-        // === 使用正确的透明度渲染背景 ===
         float alpha = hudRenderer.getConfig().backgroundAlpha;
 
-        // 渲染计数器背景
         context.setShaderColor(1.0f, 1.0f, 1.0f, alpha);
         context.drawTexture(HudRenderer.COUNTER_BG, x, y, 0, 0, COUNTER_WIDTH, COUNTER_HEIGHT, COUNTER_WIDTH, COUNTER_HEIGHT);
-
-        // === 关键修复：立即重置着色器颜色，避免影响后续渲染 ===
         context.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 
         // 渲染物品图标和数量
@@ -91,11 +83,10 @@ public class ItemCounterComponent {
             int itemY = y + (COUNTER_HEIGHT - ITEM_ICON_SIZE) / 2 + ITEM_VERTICAL_OFFSET;
 
             // === 确保物品图标透明度正常 ===
-            // 由于上面已经重置了着色器颜色，物品图标会正常渲染
             ItemStack stack = new ItemStack(item, 1);
             context.drawItem(stack, itemX, itemY);
 
-            // === 统计数字在右侧（考虑缩放补偿）===
+            // === 统计数字在右侧 ===
             MinecraftClient client = hudRenderer.getClient();
             String countText = String.valueOf(itemCount);
 
@@ -120,7 +111,7 @@ public class ItemCounterComponent {
         }
     }
 
-    // === 修复：考虑缩放影响的位置计算 ===
+    // === 考虑缩放影响的位置计算 ===
     private int calculateScaledRightAlignedPosition(MinecraftClient client, String text, int counterX) {
         // 1. 计算原始文字宽度
         int originalWidth = client.textRenderer.getWidth(text);
@@ -136,7 +127,7 @@ public class ItemCounterComponent {
         //    这样缩放后的文字最右侧就会在targetRightEdge位置
         int calculatedX = (int)(targetRightEdge - scaledWidth);
 
-        // 5. 添加额外补偿（根据测试调整）
+        // 5. 额外补偿
         return calculatedX - SCALE_COMPENSATION;
     }
 
@@ -149,7 +140,6 @@ public class ItemCounterComponent {
         context.getMatrices().push();
 
         // === 确保文字渲染使用完全不透明 ===
-        // 重置着色器颜色，避免继承背景的透明度
         context.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 
         // 以左上角为原点（当前方式）
@@ -173,12 +163,10 @@ public class ItemCounterComponent {
         // 恢复变换状态
         context.getMatrices().pop();
 
-        // === 额外安全措施：再次重置着色器颜色 ===
         context.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
     public void update() {
-        // 在更新时也检查配置
         String configItemId = StardewHUD.getConfig().counterItemId;
         if (!configItemId.equals(this.itemId)) {
             this.itemId = configItemId;
@@ -187,7 +175,7 @@ public class ItemCounterComponent {
         snapshotItems();
     }
 
-    /* ---------- 实时统计 ---------- */
+    // 实时统计
     private void snapshotItems() {
         MinecraftClient mc = hudRenderer.getClient();
         if (mc.player == null || item == null) return;
@@ -208,12 +196,10 @@ public class ItemCounterComponent {
             calculateTotalCopperValue(mc);
         } else {
             // 其他物品按原有逻辑统计
-            /* 统计所有物品栏槽位（散装物品） */
             countItemsInInventorySlots(mc.player.getInventory().main);
             countItemsInInventorySlots(mc.player.getInventory().offHand);
             countItemsInInventorySlots(mc.player.getInventory().armor);
 
-            /* 统计钱袋内的物品（如果当前统计的物品是钱币） */
             // 检查是否是钱币类物品
             if (isCoinItem()) {
                 countItemsInMoneyPouches(mc);
@@ -221,10 +207,6 @@ public class ItemCounterComponent {
         }
     }
 
-    /**
-     * 计算所有货币换算成铜币的总量
-     * 公式：铜币总数 = 现有铜币 + 9 × 现有银币 + 81 × 现有金币
-     */
     private void calculateTotalCopperValue(MinecraftClient mc) {
         // 使用数组来跟踪计数，便于传递和修改
         int[] counts = new int[3]; // 索引：0=铜币, 1=银币, 2=金币
@@ -241,11 +223,6 @@ public class ItemCounterComponent {
                 counts[0], counts[1], counts[2], itemCount);
     }
 
-    /**
-     * 统计指定槽位中的所有钱币（包括钱袋内的）
-     * @param currentCounts 当前计数数组 [铜币, 银币, 金币]
-     * @return 更新后的计数数组
-     */
     private int[] countCoinsInSlots(Iterable<ItemStack> slots, int[] currentCounts) {
         // 复制当前计数以避免修改原数组
         int[] counts = new int[] {currentCounts[0], currentCounts[1], currentCounts[2]};
@@ -286,7 +263,6 @@ public class ItemCounterComponent {
         return counts;
     }
 
-    /* 统计普通物品栏槽位 */
     private void countItemsInInventorySlots(Iterable<ItemStack> slots) {
         for (ItemStack stack : slots) {
             if (!stack.isEmpty() && stack.getItem() == item) {
@@ -295,7 +271,6 @@ public class ItemCounterComponent {
         }
     }
 
-    /* 统计钱袋内的物品 */
     private void countItemsInMoneyPouches(MinecraftClient mc) {
         // 检查主物品栏中的钱袋
         for (ItemStack stack : mc.player.getInventory().main) {
@@ -328,7 +303,6 @@ public class ItemCounterComponent {
         }
     }
 
-    /* 检查是否是钱币类物品 */
     private boolean isCoinItem() {
         // 根据YosCoins模组的物品ID判断
         String itemIdString = Registries.ITEM.getId(item).toString();
@@ -337,19 +311,16 @@ public class ItemCounterComponent {
                 itemIdString.equals(GOLD_COIN_ID);
     }
 
-    /* 检查是否是钱袋物品 */
     private boolean isMoneyPouch(ItemStack stack) {
         if (stack.isEmpty()) return false;
         String itemIdString = Registries.ITEM.getId(stack.getItem()).toString();
         return itemIdString.equals(MONEY_POUCH_ID);
     }
 
-    /* 读取钱袋内部物品栏 - 需要根据实际的钱袋API实现 */
     private SimpleInventory readMoneyPouchInventory(ItemStack moneyPouch) {
         if (moneyPouch.isEmpty()) return null;
 
         try {
-            // 方法1：尝试通过反射调用钱袋API
             try {
                 Class<?> moneyPouchClass = Class.forName("yoscoins.item.MoneyPouchItem");
                 java.lang.reflect.Method readInvMethod = moneyPouchClass.getMethod("readInv", ItemStack.class);
@@ -358,11 +329,9 @@ public class ItemCounterComponent {
                     return (SimpleInventory) result;
                 }
             } catch (ClassNotFoundException | NoSuchMethodException e) {
-                // API不可用，尝试NBT方式
                 StardewHUD.LOGGER.debug("钱袋API不可用，尝试NBT方式: {}", e.getMessage());
             }
 
-            // 方法2：通过NBT直接读取
             return readMoneyPouchFromNBT(moneyPouch);
 
         } catch (Exception e) {
@@ -371,7 +340,6 @@ public class ItemCounterComponent {
         }
     }
 
-    /* 备用方法：通过NBT读取钱袋内容 */
     private SimpleInventory readMoneyPouchFromNBT(ItemStack moneyPouch) {
         if (!moneyPouch.hasNbt()) {
             return new SimpleInventory(0);
@@ -399,7 +367,6 @@ public class ItemCounterComponent {
 
     private void parseItemId() {
         try {
-            // 使用当前存储的itemId
             Identifier id = Identifier.tryParse(itemId);
             if (id != null && Registries.ITEM.containsId(id)) {
                 item = Registries.ITEM.get(id);
@@ -414,12 +381,9 @@ public class ItemCounterComponent {
     }
 
     public void setItemId(String newItemId) {
-        // 直接更新配置，不再与this.itemId比较
         StardewHUD.getConfig().counterItemId = newItemId;
-        // 立即应用更改
         this.itemId = newItemId;
         parseItemId();
-        // 强制重新统计
         markInventoryChanged();
     }
 }

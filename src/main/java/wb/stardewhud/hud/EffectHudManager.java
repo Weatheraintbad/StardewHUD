@@ -9,15 +9,15 @@ public class EffectHudManager {
 
     public static boolean shouldShowVanillaEffects() {
         ModConfig config = StardewHUD.getConfig();
-        if (!config.enabled) return true; // 如果我们的HUD禁用，显示原版效果
+        if (!config.enabled) return true; // 如果HUD禁用，显示原版效果
 
-        // 检查我们的HUD是否与效果图标区域重叠
+        // 检查HUD是否与效果图标区域重叠
         MinecraftClient client = MinecraftClient.getInstance();
         int screenWidth = client.getWindow().getScaledWidth();
 
         int hudX, hudY, hudWidth, hudHeight;
 
-        // 获取我们的HUD位置和尺寸
+        // 获取HUD位置和尺寸
         HudRenderer hudRenderer = StardewHUD.getHudRenderer();
         hudWidth = hudRenderer.getHudWidth();
         hudHeight = hudRenderer.getHudHeight();

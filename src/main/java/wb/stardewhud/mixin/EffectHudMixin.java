@@ -30,7 +30,7 @@ public abstract class EffectHudMixin {
         MinecraftClient client = MinecraftClient.getInstance();
         int screenWidth = client.getWindow().getScaledWidth();
 
-        // 计算我们的HUD位置
+        // 计算HUD位置
         int hudX, hudY, hudWidth, hudHeight;
 
         var hudRenderer = StardewHUD.getHudRenderer();

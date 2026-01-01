@@ -33,7 +33,7 @@ public class ModConfig {
     public boolean showFortune = true;
     public boolean showItemCounter = true;
 
-    // 原版效果控制（简化：只保留隐藏选项）
+    // 原版效果控制
     public boolean hideVanillaEffects = false; // 是否隐藏原版效果图标
 
     // HUD位置类

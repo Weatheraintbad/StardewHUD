@@ -50,19 +50,11 @@ public class ClockComponent {
                 net.minecraft.util.math.RotationAxis.POSITIVE_Z.rotationDegrees(angle)
         );
 
-        // 关键修复：调整绘制位置，使旋转中心在指针左侧中心
-        // 之前：context.drawTexture(CLOCK_HAND, -handLength, -1, 0, 0, handLength, 10, handLength, 10);
-        // 问题：旋转中心在纹理的左上角(-handLength, -1)
-
-        // 修复：让旋转中心在指针左侧的中心点
-        // 指针从圆心向左延伸，所以X坐标为-HAND_LENGTH（左侧）
-        // Y坐标应该是-HAND_HEIGHT/2，让指针垂直居中
         int drawX = -HAND_LENGTH;
-        int drawY = -HAND_HEIGHT / 2; // 原来是-1，现在改为-HAND_HEIGHT/2
+        int drawY = -HAND_HEIGHT / 2;
 
         context.drawTexture(CLOCK_HAND, drawX, drawY, 0, 0, HAND_LENGTH, HAND_HEIGHT, HAND_LENGTH, HAND_HEIGHT);
 
-        // 恢复变换状态
         context.getMatrices().pop();
     }
 

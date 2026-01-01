@@ -26,16 +26,13 @@ public class FortuneComponent {
     private static final Identifier DEFAULT_ICON =
             new Identifier(StardewHUD.MOD_ID, "textures/icons/fortune/default.png");
 
-    // 存储同步过来的数据
     private String positiveEffectId = null;
     private String negativeEffectId = null;
     private long lastSyncedDay = -1;
     private boolean hasSyncedData = false;
 
-    // 图标缓存
     private final Map<String, Identifier> iconCache = new HashMap<>();
 
-    // 网络包标识
     private static final Identifier EFFECTS_SYNC_PACKET =
             new Identifier("everysingleday", "daily_effects_sync");
     private static final Identifier REQUEST_EFFECTS_PACKET =
@@ -44,14 +41,12 @@ public class FortuneComponent {
     public FortuneComponent(HudRenderer hudRenderer) {
         this.hudRenderer = hudRenderer;
 
-        // 监听网络包（如果EverySingleDay支持同步）
         setupNetworkListener();
     }
 
     private void setupNetworkListener() {
         if (StardewHUD.isModLoaded("everysingleday")) {
             try {
-                // 监听EverySingleDay的同步包
                 ClientPlayNetworking.registerGlobalReceiver(EFFECTS_SYNC_PACKET,
                         (client, handler, buf, responseSender) -> {
                             NbtCompound nbt = buf.readNbt();
@@ -69,7 +64,6 @@ public class FortuneComponent {
         }
     }
 
-    // 接收每日效果数据
     private void onDailyEffectsReceived(NbtCompound nbt) {
         positiveEffectId = nbt.getString("positive_effect");
         if (positiveEffectId.isEmpty()) positiveEffectId = null;
@@ -83,7 +77,6 @@ public class FortuneComponent {
         StardewHUD.LOGGER.debug("收到每日效果: 正面={}, 负面={}",
                 positiveEffectId, negativeEffectId);
 
-        // 预加载图标
         preloadEffectIcons();
     }
 
@@ -168,7 +161,7 @@ public class FortuneComponent {
         }
     }
 
-    // === 备用方案：反射调用API（如果EverySingleDay没有网络同步）===
+    // 备用方案：反射调用API
     private void tryReflectAPI() {
         if (!StardewHUD.isModLoaded("everysingleday")) {
             return;
@@ -200,7 +193,6 @@ public class FortuneComponent {
         }
     }
 
-    // === 新增：手动设置效果（用于测试）===
     public void setEffectsForTesting(String positiveId, String negativeId) {
         this.positiveEffectId = positiveId;
         this.negativeEffectId = negativeId;
@@ -217,7 +209,6 @@ public class FortuneComponent {
         StardewHUD.LOGGER.info("手动设置测试效果: 正面={}, 负面={}", positiveId, negativeId);
     }
 
-    // === 新增：重置数据 ===
     public void reset() {
         positiveEffectId = null;
         negativeEffectId = null;
@@ -228,12 +219,10 @@ public class FortuneComponent {
         StardewHUD.LOGGER.debug("已重置FortuneComponent数据");
     }
 
-    // === 新增：检查是否有有效数据 ===
     public boolean isValid() {
         return hasSyncedData && (positiveEffectId != null || negativeEffectId != null);
     }
 
-    // 获取方法
     public String getPositiveEffectId() {
         return positiveEffectId;
     }
