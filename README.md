@@ -10,8 +10,8 @@
 
 </div>
 
-### 在游戏界面的右上角显示类似星露谷物语的HUD组件，内容包括时钟、游戏日、星期、当日时间、天气、季节、自定义物品计数器，以及可以与[每日运势](https://github.com/Weatheraintbad/EverySingleDay)联动的运势信息显示！支持多种字体。
-In the upper right corner of the game interface, a Stardew Valley-like HUD component is displayed, including a clock, game day, day, time of day, weather, season, custom item counter, and a display of fortune information that can be linked to [Every Single Day](https://github.com/Weatheraintbad/EverySingleDay)! Supports a wide range of fonts.
+### 在游戏界面的右上角显示类似星露谷物语的HUD组件，内容包括时钟、游戏日、星期、当日时间、天气、季节（适配[Fabric Seasons](https://github.com/lucaargolo/fabric-seasons)）、自定义物品计数器，以及可以与[每日运势](https://github.com/Weatheraintbad/EverySingleDay)联动的运势信息显示！支持多种字体。
+In the upper right corner of the game interface, a Stardew Valley-like HUD component is displayed, including a clock, game day, day, time of day, weather, season (Adapted to [Fabric Seasons](https://github.com/lucaargolo/fabric-seasons)), custom item counter, and a display of fortune information that can be linked to [Every Single Day](https://github.com/Weatheraintbad/EverySingleDay)! Supports a wide range of fonts.
 
 ### 提供可高度自定义的配置界面
 Highly customizable configuration interface<br>
@@ -44,10 +44,17 @@ Fabric 1.20.1（需要 Fabric Loader 0.16.14 以及上版本，Modmenu 7.2.2 及
 
 ### 推荐搭配 Recommended combinations：
 
-[Joe's Comfy UI](https://modrinth.com/resourcepack/joes-comfy-ui)
+- 星露谷物语风格UI Stardew Valley style UI:<br>
 
-[Stardew Valley Theme for Jade](https://modrinth.com/resourcepack/stardew-valley-theme-for-jade)
+  [<img width="70" height="70" alt="Fabric Seasons" src="https://cdn.modrinth.com/data/X9P0iq3M/cfe5b36cad041e5cd61262b98db535ad33c963d1_96.webp" />](https://modrinth.com/resourcepack/joes-comfy-ui)&nbsp;&nbsp;&nbsp;
+  [<img width="70" height="70" alt="Fabric Seasons" src="https://cdn.modrinth.com/data/Av8h3gd4/9623f9db9a54935fb5ad4a8d098be24fb14f85eb.png" />](https://modrinth.com/resourcepack/stardew-valley-theme-for-jade)&nbsp;&nbsp;&nbsp;
+  [<img width="70" height="70" alt="Fabric Seasons" src="https://cdn.modrinth.com/data/hKfXoTiT/839e14ea78e3d76dc7f44346c92e63b6bf2e1463_96.webp" />](https://modrinth.com/resourcepack/purpura-skies-xaeros-minimap-frame)
+- 季节变化（完美适配）Seasonal changes (perfect fit):<br>
 
-[Purpura Skies Xaeros Minimap Frame](https://modrinth.com/resourcepack/purpura-skies-xaeros-minimap-frame)
+  [<img width="70" height="70" alt="Fabric Seasons" src="https://cdn.modrinth.com/data/KJe6y9Eu/7ce47fcb4242493ad069789298400b14f27737ad.png" />](https://modrinth.com/mod/fabric-seasons)
 
-[Fabric Seasons](https://modrinth.com/mod/fabric-seasons)
+ 
+
+
+
+
