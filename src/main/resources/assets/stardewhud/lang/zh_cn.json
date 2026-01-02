@@ -16,6 +16,7 @@
   "option.stardewhud.showTimeDisplay": "显示时间日期",
   "option.stardewhud.showWeather": "显示天气图标",
   "option.stardewhud.showFortune": "显示运势图标",
+  "option.stardewhud.showSeason": "显示季节",
   "option.stardewhud.showItemCounter": "显示物品计数器",
   "option.stardewhud.hideVanillaEffects": "隐藏原版效果图标",
 
@@ -31,6 +32,7 @@
   "tooltip.stardewhud.showTimeDisplay": "显示或隐藏时间和日期显示",
   "tooltip.stardewhud.showWeather": "显示或隐藏天气图标",
   "tooltip.stardewhud.showFortune": "显示或隐藏运势图标",
+  "tooltip.stardewhud.showSeason": "切换季节图标的显示",
   "tooltip.stardewhud.showItemCounter": "显示或隐藏物品计数器",
   "tooltip.stardewhud.hideVanillaEffects": "当原版效果图标与HUD重叠时隐藏",
 

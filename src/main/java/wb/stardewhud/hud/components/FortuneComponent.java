@@ -40,7 +40,6 @@ public class FortuneComponent {
 
     public FortuneComponent(HudRenderer hudRenderer) {
         this.hudRenderer = hudRenderer;
-
         setupNetworkListener();
     }
 
@@ -51,12 +50,9 @@ public class FortuneComponent {
                         (client, handler, buf, responseSender) -> {
                             NbtCompound nbt = buf.readNbt();
                             if (nbt != null) {
-                                client.execute(() -> {
-                                    this.onDailyEffectsReceived(nbt);
-                                });
+                                client.execute(() -> this.onDailyEffectsReceived(nbt));
                             }
                         });
-
                 StardewHUD.LOGGER.info("已注册EverySingleDay数据同步监听器");
             } catch (Exception e) {
                 StardewHUD.LOGGER.warn("无法注册EverySingleDay网络监听: {}", e.getMessage());
@@ -74,20 +70,12 @@ public class FortuneComponent {
         lastSyncedDay = nbt.getLong("last_day");
         hasSyncedData = true;
 
-        StardewHUD.LOGGER.debug("收到每日效果: 正面={}, 负面={}",
-                positiveEffectId, negativeEffectId);
-
+        StardewHUD.LOGGER.debug("收到每日效果: 正面={}, 负面={}", positiveEffectId, negativeEffectId);
         preloadEffectIcons();
     }
 
     public void render(DrawContext context, int x, int y) {
-        // 如果没有同步数据，显示默认图标
-        if (!hasSyncedData) {
-            context.drawTexture(DEFAULT_ICON, x, y, 0, 0, 32, 32, 32, 32);
-            return;
-        }
-
-        // 渲染效果图标
+        // 只渲染效果图标，不处理季节
         int iconSize = 14;
         int spacing = 3;
 
@@ -99,6 +87,21 @@ public class FortuneComponent {
         if (negativeEffectId != null) {
             Identifier icon = getEffectIcon(negativeEffectId);
             context.drawTexture(icon, x + iconSize + spacing, y, 0, 0, iconSize, iconSize, iconSize, iconSize);
+        }
+    }
+
+    public void update() {
+        MinecraftClient client = hudRenderer.getClient();
+        if (client == null || client.player == null || client.world == null) {
+            return;
+        }
+
+        // 处理数据同步
+        long currentDay = client.world.getTime() / 24000L;
+        if (!hasSyncedData || currentDay != lastSyncedDay) {
+            if (StardewHUD.isModLoaded("everysingleday")) {
+                requestDailyEffectsData();
+            }
         }
     }
 
@@ -121,34 +124,13 @@ public class FortuneComponent {
         return new Identifier(iconPath);
     }
 
-    public void update() {
-        MinecraftClient client = hudRenderer.getClient();
-        ClientPlayerEntity player = client.player;
-
-        if (player == null || client.world == null) {
-            return;
-        }
-
-        // 检查是否需要请求数据
-        long currentDay = client.world.getTime() / 24000L;
-        if (!hasSyncedData || currentDay != lastSyncedDay) {
-            // 尝试从EverySingleDay获取数据
-            if (StardewHUD.isModLoaded("everysingleday")) {
-                requestDailyEffectsData();
-            }
-        }
-    }
-
     private void requestDailyEffectsData() {
-        // 检查是否连接到服务器并且网络连接可用
         if (!ClientPlayNetworking.canSend(REQUEST_EFFECTS_PACKET)) {
             return;
         }
 
-        // 发送请求到服务器
         PacketByteBuf buf = PacketByteBufs.create();
         ClientPlayNetworking.send(REQUEST_EFFECTS_PACKET, buf);
-
         StardewHUD.LOGGER.debug("已发送每日效果数据请求");
     }
 
@@ -161,43 +143,11 @@ public class FortuneComponent {
         }
     }
 
-    // 备用方案：反射调用API
-    private void tryReflectAPI() {
-        if (!StardewHUD.isModLoaded("everysingleday")) {
-            return;
-        }
-
-        try {
-            // 尝试加载EverySingleDay类
-            Class<?> everySingleDayClass = Class.forName(
-                    "weatheraintbad.everysingleday.EverySingleDay"
-            );
-
-            // 尝试找到API静态类
-            for (Class<?> innerClass : everySingleDayClass.getDeclaredClasses()) {
-                if (innerClass.getSimpleName().equals("API")) {
-                    // 尝试调用静态方法
-                    Method getPositiveEffectMethod = innerClass.getMethod(
-                            "getPositiveEffect",
-                            net.minecraft.server.network.ServerPlayerEntity.class
-                    );
-
-                    // 注意：我们只有ClientPlayerEntity，所以这个方法可能不可用
-                    StardewHUD.LOGGER.info("找到EverySingleDay API类");
-                    break;
-                }
-            }
-
-        } catch (Exception e) {
-            StardewHUD.LOGGER.debug("反射调用EverySingleDay API失败: {}", e.getMessage());
-        }
-    }
-
     public void setEffectsForTesting(String positiveId, String negativeId) {
         this.positiveEffectId = positiveId;
         this.negativeEffectId = negativeId;
         this.hasSyncedData = true;
-        this.lastSyncedDay = -1; // 设置为-1以便下次更新时重新请求
+        this.lastSyncedDay = -1;
 
         if (positiveId != null) {
             getEffectIcon(positiveId);

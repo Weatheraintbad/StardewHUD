@@ -16,6 +16,7 @@
   "option.stardewhud.showTimeDisplay": "Show Time Display",
   "option.stardewhud.showWeather": "Show Weather",
   "option.stardewhud.showFortune": "Show Fortune",
+  "option.stardewhud.showSeason": "Show Season",
   "option.stardewhud.showItemCounter": "Show Item Counter",
   "option.stardewhud.hideVanillaEffects": "Hide Vanilla Effects",
 
@@ -31,6 +32,7 @@
   "tooltip.stardewhud.showTimeDisplay": "Show or hide the time and date display",
   "tooltip.stardewhud.showWeather": "Show or hide the weather icon",
   "tooltip.stardewhud.showFortune": "Show or hide the fortune icon",
+  "tooltip.stardewhud.showSeason": "Toggle season icon visibility",
   "tooltip.stardewhud.showItemCounter": "Show or hide the item counter",
   "tooltip.stardewhud.hideVanillaEffects": "Hide vanilla status effects when they overlap with the HUD",
 

@@ -139,6 +139,14 @@ public class ConfigScreenWrapper {
                 .build());
 
         visibility.addEntry(entryBuilder.startBooleanToggle(
+                        Text.translatable("option.stardewhud.showSeason"),
+                        config.showSeason)
+                .setDefaultValue(true)
+                .setTooltip(Text.translatable("tooltip.stardewhud.showSeason"))
+                .setSaveConsumer(newValue -> config.showSeason = newValue)
+                .build());
+
+        visibility.addEntry(entryBuilder.startBooleanToggle(
                         Text.translatable("option.stardewhud.showItemCounter"),
                         config.showItemCounter)
                 .setDefaultValue(true)
@@ -149,7 +157,7 @@ public class ConfigScreenWrapper {
         // 原版效果控制分类
         ConfigCategory effects = builder.getOrCreateCategory(Text.translatable("category.stardewhud.effects"));
 
-        // 添加说明文本
+        // 说明文本
         effects.addEntry(entryBuilder.startTextDescription(
                         Text.translatable("tip.stardewhud.effects"))
                 .build());
@@ -158,7 +166,7 @@ public class ConfigScreenWrapper {
                         Text.translatable("option.stardewhud.hideVanillaEffects"),
                         config.hideVanillaEffects)
                 .setDefaultValue(false)
-                .setTooltip(Text.translatable("tooltip.stardewhud.hideVanillaEffects"))
+                .setTooltip(Text.translatable(("tooltip.stardewhud.hideVanillaEffects")))
                 .setSaveConsumer(newValue -> config.hideVanillaEffects = newValue)
                 .build());
 

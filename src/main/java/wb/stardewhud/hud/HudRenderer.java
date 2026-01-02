@@ -18,6 +18,7 @@ public class HudRenderer {
     private final WeatherComponent weather;
     private final FortuneComponent fortune;
     private final ItemCounterComponent itemCounter;
+    private final SeasonComponent season;
 
     // 纹理标识符
     public static final Identifier CLOCK_BG = new Identifier(StardewHUD.MOD_ID, "textures/gui/clock_bg.png");
@@ -47,6 +48,7 @@ public class HudRenderer {
         this.weather = new WeatherComponent(this);
         this.fortune = new FortuneComponent(this);
         this.itemCounter = new ItemCounterComponent(this, config.counterItemId);
+        this.season = new SeasonComponent(this);
     }
 
     public void render(DrawContext context, float tickDelta) {
@@ -68,8 +70,6 @@ public class HudRenderer {
             y = margin;
         } else {
             // 使用配置的位置
-            // X: 从右侧计算（屏幕宽度 - 配置的X值）
-            // Y: 从顶部计算（直接使用配置的Y值）
             x = screenWidth - config.position.x;
             y = config.position.y;
         }
@@ -93,34 +93,37 @@ public class HudRenderer {
             }
 
             // 3. 渲染信息框背景（如果启用了任何信息框组件）
-            if (config.showTimeDisplay || config.showWeather || config.showFortune) {
+            if (config.showTimeDisplay || config.showWeather || config.showFortune || config.showSeason) {
                 // 渲染信息框背景
                 renderInfoBackground(context, CLOCK_WIDTH, 0);
 
-                // 渲染天气和运势图标
-                if (config.showWeather || config.showFortune) {
-                    int iconY = 26;
-                    int iconSpacing = 24;
-                    int firstIconX = CLOCK_WIDTH + 15;
+                // 计算基础图标位置
+                int baseIconX = CLOCK_WIDTH + 15;
+                int iconY = 26;
+                int iconSpacing = 24;
 
-                    if (config.showWeather) {
-                        weather.render(context, firstIconX, iconY);
-                    }
+                // 渲染天气图标
+                if (config.showWeather) {
+                    weather.render(context, baseIconX, iconY);
+                    baseIconX += iconSpacing; // 下一个图标向右偏移
+                }
 
-                    if (config.showFortune) {
-                        fortune.render(context, firstIconX + iconSpacing, iconY);
-                    }
+                // 渲染季节或运势图标（二选一，季节优先）
+                if (config.showSeason) {
+                    // 季节开启时，始终渲染季节图标（覆盖运势位置）
+                    season.render(context, baseIconX, iconY);
+                } else if (config.showFortune && fortune.hasEffectsData()) {
+                    // 只有没开启季节，且运势有数据时，才渲染运势图标
+                    fortune.render(context, baseIconX, iconY);
                 }
 
                 // 渲染时间显示
                 if (config.showTimeDisplay) {
-                    // 第一层日期显示水平居中
                     timeDisplay.renderGameInfo(context, CLOCK_WIDTH - 1, INFO_WIDTH - 4, 11);
-
-                    // 第三层时间显示水平居中
                     timeDisplay.renderTime(context, CLOCK_WIDTH - 3, INFO_WIDTH, 48);
                 }
             }
+
 
         } finally {
             context.getMatrices().pop();
@@ -128,7 +131,6 @@ public class HudRenderer {
     }
 
     private void renderInfoBackground(DrawContext context, int x, int y) {
-        // 渲染信息框背景
         context.setShaderColor(1.0f, 1.0f, 1.0f, config.backgroundAlpha);
         context.drawTexture(INFO_BG, x, y, 0, 0, INFO_WIDTH, INFO_HEIGHT, INFO_WIDTH, INFO_HEIGHT);
         context.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -143,6 +145,8 @@ public class HudRenderer {
             if (config.showWeather) weather.update(world);
             if (config.showFortune) fortune.update();
             if (config.showItemCounter) itemCounter.update();
+            // 季节始终更新，不受配置影响（可根据需要改为受配置控制）
+            season.update();
         }
     }
 

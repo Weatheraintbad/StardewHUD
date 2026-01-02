@@ -32,6 +32,7 @@ public class ModConfig {
     public boolean showWeather = true;
     public boolean showFortune = true;
     public boolean showItemCounter = true;
+    public Boolean showSeason = true;
 
     // 原版效果控制
     public boolean hideVanillaEffects = false; // 是否隐藏原版效果图标
@@ -68,6 +69,7 @@ public class ModConfig {
                 this.showWeather = loaded.showWeather;
                 this.showFortune = loaded.showFortune;
                 this.showItemCounter = loaded.showItemCounter;
+                this.showSeason = loaded.showSeason != null ? loaded.showSeason : true; // 兼容旧配置，默认为true
 
                 // 加载原版效果控制
                 this.hideVanillaEffects = loaded.hideVanillaEffects;
