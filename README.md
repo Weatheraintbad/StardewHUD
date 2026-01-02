@@ -49,3 +49,5 @@ Fabric 1.20.1（需要 Fabric Loader 0.16.14 以及上版本，Modmenu 7.2.2 及
 [Stardew Valley Theme for Jade](https://modrinth.com/resourcepack/stardew-valley-theme-for-jade)
 
 [Purpura Skies Xaeros Minimap Frame](https://modrinth.com/resourcepack/purpura-skies-xaeros-minimap-frame)
+
+[Fabric Seasons](https://modrinth.com/mod/fabric-seasons)
