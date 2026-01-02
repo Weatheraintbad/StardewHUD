@@ -50,7 +50,7 @@ public class SeasonComponent {
             lastCalculatedDay = dayFromTicks;
 
             // 计算季节索引（每91天一个季节）
-            int seasonIndex = (int)((dayFromTicks / 91) % 4);
+            int seasonIndex = (int)((dayFromTicks / 28) % 4);
 
             // 获取新季节图标
             Identifier newSeasonIcon = getSeasonIcon(seasonIndex);
