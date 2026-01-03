@@ -1,6 +1,12 @@
+<img width="2310" height="528" alt="screenshot (11)" src="https://github.com/user-attachments/assets/16a7394c-6679-4281-9e2b-11740b0bad16" /><br>
+
 <div align="center">
+
+
+  [<img alt="fabric" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/fabric_vector.svg">](https://github.com/Weatheraintbad/StardewHUD)&nbsp;&nbsp;&nbsp;
+  [<img alt="modrinth" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/github_vector.svg">](https://github.com/Weatheraintbad/StardewHUD/releases)
   
-  <img width="2310" height="528" alt="screenshot (11)" src="https://github.com/user-attachments/assets/16a7394c-6679-4281-9e2b-11740b0bad16" />
+  [<img alt="fabric-api" height="40" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/requires/fabric-api_vector.svg">](https://modrinth.com/mod/fabric-api)
 
   ### 为我的世界添加星露谷物语的HUD显示组件！
 
@@ -38,9 +44,13 @@ Highly customizable configuration interface<br>
 
 ### 目前支持的版本 Currently supported versions：
 
-Fabric 1.20.1（需要 Fabric Loader 0.16.14 以及上版本，Modmenu 7.2.2 及以上版本，Fabric API任意版本）。
+Fabric 1.20.1 / 1.21.1（需要 Fabric Loader 0.16.14 以及上版本，Modmenu以及Fabric API任意版本）。
 
-(requires Fabric Loader 0.16.14 or higher, Modmenu 7.2.2 or higher，any version of Fabric API).
+(requires Fabric Loader 0.16.14 or higher, and any version of Modmenu and Fabric API).
+
+### 下载 Download: 
+
+[<img alt="modrinth" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/github_vector.svg">](https://github.com/Weatheraintbad/StardewHUD/releases)
 
 ### 推荐搭配 Recommended combinations：
 
@@ -52,9 +62,3 @@ Fabric 1.20.1（需要 Fabric Loader 0.16.14 以及上版本，Modmenu 7.2.2 及
 - 季节变化（完美适配）Seasonal changes (perfect fit):<br>
 
   [<img width="70" height="70" alt="Fabric Seasons" src="https://cdn.modrinth.com/data/KJe6y9Eu/7ce47fcb4242493ad069789298400b14f27737ad.png" />](https://modrinth.com/mod/fabric-seasons)
-
- 
-
-
-
-
