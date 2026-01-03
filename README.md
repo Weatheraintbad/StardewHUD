@@ -4,6 +4,7 @@
 
 
   [<img alt="fabric" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/fabric_vector.svg">](https://github.com/Weatheraintbad/StardewHUD)&nbsp;&nbsp;&nbsp;
+  [<img alt="forge" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/forge_vector.svg" >](https://github.com/Weatheraintbad/StardewHUD-Forge)&nbsp;&nbsp;&nbsp;
   [<img alt="modrinth" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/github_vector.svg">](https://github.com/Weatheraintbad/StardewHUD/releases)
   
   [<img alt="fabric-api" height="40" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/requires/fabric-api_vector.svg">](https://modrinth.com/mod/fabric-api)&nbsp;&nbsp;&nbsp;
