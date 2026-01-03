@@ -6,7 +6,8 @@
   [<img alt="fabric" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/fabric_vector.svg">](https://github.com/Weatheraintbad/StardewHUD)&nbsp;&nbsp;&nbsp;
   [<img alt="modrinth" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/github_vector.svg">](https://github.com/Weatheraintbad/StardewHUD/releases)
   
-  [<img alt="fabric-api" height="40" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/requires/fabric-api_vector.svg">](https://modrinth.com/mod/fabric-api)
+  [<img alt="fabric-api" height="40" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/requires/fabric-api_vector.svg">](https://modrinth.com/mod/fabric-api)&nbsp;&nbsp;&nbsp;
+  [<img alt="cloth-config-api" height="40" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/requires/cloth-config-api_vector.svg">](https://modrinth.com/mod/cloth-config)
 
   ### 为我的世界添加星露谷物语的HUD显示组件！
 
@@ -44,9 +45,9 @@ Highly customizable configuration interface<br>
 
 ### 目前支持的版本 Currently supported versions：
 
-Fabric 1.20.1 / 1.21.1（需要 Fabric Loader 0.16.14 以及上版本，Modmenu以及Fabric API任意版本）。
+Fabric 1.20.1 / 1.21.1（需要 Fabric Loader 0.16.14 以及上版本，Modmenu、Cloth Config以及Fabric API任意版本）。
 
-(requires Fabric Loader 0.16.14 or higher, and any version of Modmenu and Fabric API).
+(requires Fabric Loader 0.16.14 or higher, and any version of Modmenu, Cloth Config and Fabric API).
 
 ### 下载 Download: 
 
