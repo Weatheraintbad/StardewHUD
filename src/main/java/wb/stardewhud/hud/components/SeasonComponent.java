@@ -10,15 +10,15 @@ import wb.stardewhud.hud.HudRenderer;
 public class SeasonComponent {
     private final HudRenderer hudRenderer;
 
-    // 季节图标
+    // 季节图标 - 使用Identifier.of()方法
     private static final Identifier SPRING_ICON =
-            new Identifier(StardewHUD.MOD_ID, "textures/icons/fortune/spring.png");
+            Identifier.of(StardewHUD.MOD_ID, "textures/icons/fortune/spring.png");
     private static final Identifier SUMMER_ICON =
-            new Identifier(StardewHUD.MOD_ID, "textures/icons/fortune/summer.png");
+            Identifier.of(StardewHUD.MOD_ID, "textures/icons/fortune/summer.png");
     private static final Identifier AUTUMN_ICON =
-            new Identifier(StardewHUD.MOD_ID, "textures/icons/fortune/autumn.png");
+            Identifier.of(StardewHUD.MOD_ID, "textures/icons/fortune/autumn.png");
     private static final Identifier WINTER_ICON =
-            new Identifier(StardewHUD.MOD_ID, "textures/icons/fortune/winter.png");
+            Identifier.of(StardewHUD.MOD_ID, "textures/icons/fortune/winter.png");
 
     private long lastCalculatedDay = -1;
     private Identifier currentSeasonIcon = SPRING_ICON;
@@ -30,7 +30,6 @@ public class SeasonComponent {
     public void render(DrawContext context, int x, int y) {
         context.drawTexture(currentSeasonIcon, x - 8, y - 2, 0, 0, 41, 17, 41, 17);
     }
-
 
     public void update() {
         MinecraftClient client = hudRenderer.getClient();

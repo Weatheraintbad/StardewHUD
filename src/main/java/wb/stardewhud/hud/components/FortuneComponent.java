@@ -5,26 +5,27 @@ import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.packet.CustomPayload;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.util.Identifier;
 import wb.stardewhud.StardewHUD;
 import wb.stardewhud.hud.HudRenderer;
 
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
 public class FortuneComponent {
     private final HudRenderer hudRenderer;
 
-    // 图标路径
+    // 图标路径模板
     private static final String FORTUNE_ICON_PATH_TEMPLATE =
             StardewHUD.MOD_ID + ":textures/icons/fortune/%s.png";
 
     // 默认图标
     private static final Identifier DEFAULT_ICON =
-            new Identifier(StardewHUD.MOD_ID, "textures/icons/fortune/default.png");
+            Identifier.of(StardewHUD.MOD_ID, "textures/icons/fortune/default.png");
 
     private String positiveEffectId = null;
     private String negativeEffectId = null;
@@ -33,10 +34,41 @@ public class FortuneComponent {
 
     private final Map<String, Identifier> iconCache = new HashMap<>();
 
-    private static final Identifier EFFECTS_SYNC_PACKET =
-            new Identifier("everysingleday", "daily_effects_sync");
-    private static final Identifier REQUEST_EFFECTS_PACKET =
-            new Identifier("stardewhud", "request_daily_effects");
+    // 1.21.1 新的网络系统 - 需要创建Payload类型
+    private static final Identifier EFFECTS_SYNC_PACKET_ID =
+            Identifier.of("everysingleday", "daily_effects_sync");
+    private static final Identifier REQUEST_EFFECTS_PACKET_ID =
+            Identifier.of("stardewhud", "request_daily_effects");
+
+    // 创建一个简单的自定义Payload
+    public record EffectsSyncPayload(NbtCompound data) implements CustomPayload {
+        public static final CustomPayload.Id<EffectsSyncPayload> ID =
+                new CustomPayload.Id<>(EFFECTS_SYNC_PACKET_ID);
+
+        public static final PacketCodec<PacketByteBuf, EffectsSyncPayload> CODEC =
+                PacketCodec.ofStatic(
+                        (buf, payload) -> buf.writeNbt(payload.data),
+                        buf -> new EffectsSyncPayload(buf.readNbt())
+                );
+
+        @Override
+        public Id<? extends CustomPayload> getId() {
+            return ID;
+        }
+    }
+
+    public record RequestEffectsPayload() implements CustomPayload {
+        public static final CustomPayload.Id<RequestEffectsPayload> ID =
+                new CustomPayload.Id<>(REQUEST_EFFECTS_PACKET_ID);
+
+        public static final PacketCodec<PacketByteBuf, RequestEffectsPayload> CODEC =
+                PacketCodec.unit(new RequestEffectsPayload());
+
+        @Override
+        public Id<? extends CustomPayload> getId() {
+            return ID;
+        }
+    }
 
     public FortuneComponent(HudRenderer hudRenderer) {
         this.hudRenderer = hudRenderer;
@@ -46,11 +78,12 @@ public class FortuneComponent {
     private void setupNetworkListener() {
         if (StardewHUD.isModLoaded("everysingleday")) {
             try {
-                ClientPlayNetworking.registerGlobalReceiver(EFFECTS_SYNC_PACKET,
-                        (client, handler, buf, responseSender) -> {
-                            NbtCompound nbt = buf.readNbt();
+                // 1.21.1 使用新的Payload系统
+                ClientPlayNetworking.registerGlobalReceiver(EffectsSyncPayload.ID,
+                        (payload, context) -> {
+                            NbtCompound nbt = payload.data();
                             if (nbt != null) {
-                                client.execute(() -> this.onDailyEffectsReceived(nbt));
+                                context.client().execute(() -> this.onDailyEffectsReceived(nbt));
                             }
                         });
                 StardewHUD.LOGGER.info("已注册EverySingleDay数据同步监听器");
@@ -121,16 +154,16 @@ public class FortuneComponent {
 
     private Identifier loadEffectIcon(String effectId) {
         String iconPath = String.format(FORTUNE_ICON_PATH_TEMPLATE, effectId);
-        return new Identifier(iconPath);
+        return Identifier.of(iconPath);
     }
 
     private void requestDailyEffectsData() {
-        if (!ClientPlayNetworking.canSend(REQUEST_EFFECTS_PACKET)) {
+        if (!ClientPlayNetworking.canSend(RequestEffectsPayload.ID)) {
             return;
         }
 
-        PacketByteBuf buf = PacketByteBufs.create();
-        ClientPlayNetworking.send(REQUEST_EFFECTS_PACKET, buf);
+        // 1.21.1 发送自定义Payload
+        ClientPlayNetworking.send(new RequestEffectsPayload());
         StardewHUD.LOGGER.debug("已发送每日效果数据请求");
     }
 

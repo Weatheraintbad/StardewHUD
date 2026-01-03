@@ -1,7 +1,6 @@
 package wb.stardewhud.hud;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.hud.InGameHud;
 import wb.stardewhud.StardewHUD;
 import wb.stardewhud.config.ModConfig;
 

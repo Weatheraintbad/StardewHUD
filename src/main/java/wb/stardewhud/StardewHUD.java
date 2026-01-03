@@ -40,7 +40,8 @@ public class StardewHUD implements ClientModInitializer {
         hudRenderer = new HudRenderer(config);
 
         // 注册HUD渲染事件
-        HudRenderCallback.EVENT.register((drawContext, tickDelta) -> {
+        HudRenderCallback.EVENT.register((drawContext, tickCounter) -> {
+            float tickDelta = tickCounter.getTickDelta(false);
             // 渲染实际的HUD
             if (hudRenderer.shouldRender()) {
                 hudRenderer.render(drawContext, tickDelta);
@@ -72,5 +73,4 @@ public class StardewHUD implements ClientModInitializer {
     public static boolean isModLoaded(String modId) {
         return FabricLoader.getInstance().isModLoaded(modId);
     }
-
 }

@@ -20,10 +20,10 @@ public class HudRenderer {
     private final ItemCounterComponent itemCounter;
     private final SeasonComponent season;
 
-    // 纹理标识符
-    public static final Identifier CLOCK_BG = new Identifier(StardewHUD.MOD_ID, "textures/gui/clock_bg.png");
-    public static final Identifier INFO_BG = new Identifier(StardewHUD.MOD_ID, "textures/gui/info_bg.png");
-    public static final Identifier COUNTER_BG = new Identifier(StardewHUD.MOD_ID, "textures/gui/counter_bg.png");
+    // 纹理标识符 - 使用Identifier.of()方法创建
+    public static final Identifier CLOCK_BG = Identifier.of(StardewHUD.MOD_ID, "textures/gui/clock_bg.png");
+    public static final Identifier INFO_BG = Identifier.of(StardewHUD.MOD_ID, "textures/gui/info_bg.png");
+    public static final Identifier COUNTER_BG = Identifier.of(StardewHUD.MOD_ID, "textures/gui/counter_bg.png");
 
     // HUD尺寸常量（原始尺寸，未缩放）
     private static final int CLOCK_WIDTH = 40;
@@ -123,7 +123,6 @@ public class HudRenderer {
                     timeDisplay.renderTime(context, CLOCK_WIDTH - 3, INFO_WIDTH, 48);
                 }
             }
-
 
         } finally {
             context.getMatrices().pop();

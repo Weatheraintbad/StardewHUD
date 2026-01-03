@@ -69,7 +69,7 @@ public class ModConfig {
                 this.showWeather = loaded.showWeather;
                 this.showFortune = loaded.showFortune;
                 this.showItemCounter = loaded.showItemCounter;
-                this.showSeason = loaded.showSeason != null ? loaded.showSeason : true; // 兼容旧配置，默认为true
+                this.showSeason = loaded.showSeason != null ? loaded.showSeason : true;
 
                 // 加载原版效果控制
                 this.hideVanillaEffects = loaded.hideVanillaEffects;

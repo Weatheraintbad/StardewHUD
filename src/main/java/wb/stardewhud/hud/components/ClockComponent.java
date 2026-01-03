@@ -21,8 +21,8 @@ public class ClockComponent {
     private static final int HAND_LENGTH = 29; // 指针长度
     private static final int HAND_HEIGHT = 11; // 指针高度（厚度）
 
-    // 纹理标识符
-    private static final Identifier CLOCK_HAND = new Identifier(StardewHUD.MOD_ID, "textures/gui/clock_hand.png");
+    // 纹理标识符 - 使用Identifier.of()方法
+    private static final Identifier CLOCK_HAND = Identifier.of(StardewHUD.MOD_ID, "textures/gui/clock_hand.png");
 
     public ClockComponent(HudRenderer hudRenderer) {
         this.hudRenderer = hudRenderer;

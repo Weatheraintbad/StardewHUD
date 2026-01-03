@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "stardewhud",
-  "version": "1.1.6",
+  "version": "1.2.0",
   "name": "StardewHUD",
   "description": "一个星露谷物语风格的HUD模组，可显示时间、天气、运势和物品计数器",
   "authors": ["Weatheraintbad"],
@@ -25,13 +25,12 @@
   "depends": {
     "fabricloader": ">=0.16.14",
     "fabric-api": "*",
-    "minecraft": "~1.20.1",
-    "java": ">=17"
+    "minecraft": "~1.21.1",
+    "java": ">=21"
   },
   "custom": {
     "modmenu": {
-      "links": {
-      }
+      "links": {}
     }
   }
 }

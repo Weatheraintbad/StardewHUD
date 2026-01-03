@@ -9,10 +9,10 @@ import wb.stardewhud.hud.HudRenderer;
 public class WeatherComponent {
     private final HudRenderer hudRenderer;
 
-    // 天气图标纹理
-    private static final Identifier WEATHER_SUNNY = new Identifier(StardewHUD.MOD_ID, "textures/icons/weather/sunny.png");
-    private static final Identifier WEATHER_RAINY = new Identifier(StardewHUD.MOD_ID, "textures/icons/weather/rainy.png");
-    private static final Identifier WEATHER_THUNDER = new Identifier(StardewHUD.MOD_ID, "textures/icons/weather/thunder.png");
+    // 天气图标纹理 - 使用Identifier.of()方法
+    private static final Identifier WEATHER_SUNNY = Identifier.of(StardewHUD.MOD_ID, "textures/icons/weather/sunny.png");
+    private static final Identifier WEATHER_RAINY = Identifier.of(StardewHUD.MOD_ID, "textures/icons/weather/rainy.png");
+    private static final Identifier WEATHER_THUNDER = Identifier.of(StardewHUD.MOD_ID, "textures/icons/weather/thunder.png");
 
     // 当前天气状态
     private WeatherType currentWeather = WeatherType.SUNNY;
@@ -28,10 +28,7 @@ public class WeatherComponent {
     }
 
     public void render(DrawContext context, int x, int y) {
-        // 根据当前天气状态选择图标
         Identifier iconTexture = getWeatherIcon();
-
-        // 渲染天气图标（20x14），使用给定的坐标
         if (iconTexture != null) {
             context.drawTexture(iconTexture, x - 7, y, 0, 0, 21, 13, 21, 13);
         }
