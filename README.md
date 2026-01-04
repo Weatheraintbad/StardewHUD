@@ -18,8 +18,8 @@
 
 </div>
 
-### 在游戏界面的右上角显示类似星露谷物语的HUD组件，内容包括时钟、游戏日、星期、当日时间、天气、季节（适配[Fabric Seasons](https://github.com/lucaargolo/fabric-seasons)或[Forge Seasins](https://modrinth.com/mod/forge-seasons)）、自定义物品计数器，以及可以与[每日运势](https://github.com/Weatheraintbad/EverySingleDay)联动的运势信息显示！支持多种字体。
-In the upper right corner of the game interface, a Stardew Valley-like HUD component is displayed, including a clock, game day, day, time of day, weather, season (Adapted to [Fabric Seasons](https://github.com/lucaargolo/fabric-seasons)or[Forge Seasins](https://modrinth.com/mod/forge-seasons)), custom item counter, and a display of fortune information that can be linked to [Every Single Day](https://github.com/Weatheraintbad/EverySingleDay)! Supports a wide range of fonts.
+### 在游戏界面的右上角显示类似星露谷物语的HUD组件，内容包括时钟、游戏日、星期、当日时间、天气、季节（适配[Fabric Seasons](https://github.com/lucaargolo/fabric-seasons)或[Forge Seasons](https://modrinth.com/mod/forge-seasons)）、自定义物品计数器，以及可以与[每日运势](https://github.com/Weatheraintbad/EverySingleDay)联动的运势信息显示！支持多种字体。
+In the upper right corner of the game interface, a Stardew Valley-like HUD component is displayed, including a clock, game day, day, time of day, weather, season (Adapted to [Fabric Seasons](https://github.com/lucaargolo/fabric-seasons)or[Forge Seasons](https://modrinth.com/mod/forge-seasons)), custom item counter, and a display of fortune information that can be linked to [Every Single Day](https://github.com/Weatheraintbad/EverySingleDay)! Supports a wide range of fonts.
 
 ### 提供可高度自定义的配置界面
 Highly customizable configuration interface<br>
