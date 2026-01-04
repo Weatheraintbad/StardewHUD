@@ -5,6 +5,8 @@
 
   [<img alt="fabric" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/fabric_vector.svg">](https://github.com/Weatheraintbad/StardewHUD)&nbsp;&nbsp;&nbsp;
   [<img alt="forge" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/forge_vector.svg" >](https://github.com/Weatheraintbad/StardewHUD-Forge)&nbsp;&nbsp;&nbsp;
+  [<img alt="neoforge" height="56" src="https://cdn.jsdelivr.net/gh/Hyperbole-Devs/vectors@neoforge_badges/assets/cozy/supported/neoforge_vector.svg">](https://github.com/Weatheraintbad/StardewHUD-NeoForge)
+
   [<img alt="modrinth" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/github_vector.svg">](https://github.com/Weatheraintbad/StardewHUD/releases)
   
   [<img alt="fabric-api" height="40" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/requires/fabric-api_vector.svg">](https://modrinth.com/mod/fabric-api)&nbsp;&nbsp;&nbsp;
@@ -18,8 +20,8 @@
 
 </div>
 
-### 在游戏界面的右上角显示类似星露谷物语的HUD组件，内容包括时钟、游戏日、星期、当日时间、天气、季节（适配[Fabric Seasons](https://github.com/lucaargolo/fabric-seasons)）、自定义物品计数器，以及可以与[每日运势](https://github.com/Weatheraintbad/EverySingleDay)联动的运势信息显示！支持多种字体。
-In the upper right corner of the game interface, a Stardew Valley-like HUD component is displayed, including a clock, game day, day, time of day, weather, season (Adapted to [Fabric Seasons](https://github.com/lucaargolo/fabric-seasons)), custom item counter, and a display of fortune information that can be linked to [Every Single Day](https://github.com/Weatheraintbad/EverySingleDay)! Supports a wide range of fonts.
+### 在游戏界面的右上角显示类似星露谷物语的HUD组件，内容包括时钟、游戏日、星期、当日时间、天气、季节（适配[Fabric Seasons](https://github.com/lucaargolo/fabric-seasons)或[Forge Seasins](https://modrinth.com/mod/forge-seasons)）、自定义物品计数器，以及可以与[每日运势](https://github.com/Weatheraintbad/EverySingleDay)联动的运势信息显示！支持多种字体。
+In the upper right corner of the game interface, a Stardew Valley-like HUD component is displayed, including a clock, game day, day, time of day, weather, season (Adapted to [Fabric Seasons](https://github.com/lucaargolo/fabric-seasons)or[Forge Seasins](https://modrinth.com/mod/forge-seasons)), custom item counter, and a display of fortune information that can be linked to [Every Single Day](https://github.com/Weatheraintbad/EverySingleDay)! Supports a wide range of fonts.
 
 ### 提供可高度自定义的配置界面
 Highly customizable configuration interface<br>
@@ -46,11 +48,14 @@ Highly customizable configuration interface<br>
 
 ### 目前支持的版本 Currently supported versions：
 
-- **Fabric 1.20.1 / 1.21.1**（需要 Fabric Loader 0.16.14 以及上版本，Modmenu、Cloth Config以及Fabric API任意版本）。
+- **Fabric 1.20.1 / 1.21.1**（需要 Fabric Loader 0.16.14 以及上版本，Modmenu、Cloth Config以及Fabric API任意版本）。<br>
   (requires Fabric Loader 0.16.14 or higher, and any version of Modmenu, Cloth Config and Fabric API).
 
-- **Forge 1.20.1**（需要 Forge Loader 47 及以上版本）。
+- **Forge 1.20.1**（需要 Forge Loader 47 及以上版本）。<br>
   (requires Forge Loader 47 or higher).
+
+- **NeoForge 1.21.1**（需要NeoForge 21.1.216 及以上版本）。<br>
+  (requires NeoForge 21.1.216 or higher.)
 
 ### 下载 Download: 
 
