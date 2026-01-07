@@ -59,6 +59,12 @@ Highly customizable configuration interface<br>
 - **NeoForge 1.21.1**（需要NeoForge 21.1.216 及以上版本）。<br>
   (requires NeoForge 21.1.216 or higher.)
 
+### Forge及Neoforge版本源码 Source code of Forge and Neoforge version：
+
+- https://github.com/Weatheraintbad/StardewHUD-Forge
+
+- https://github.com/Weatheraintbad/StardewHUD-NeoForge
+
 ### 下载 Download: 
 
 [<img alt="modrinth" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/modrinth_vector.svg">](https://modrinth.com/mod/stardew-hud)&nbsp;&nbsp;&nbsp;
