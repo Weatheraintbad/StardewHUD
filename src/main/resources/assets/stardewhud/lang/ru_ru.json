@@ -1,0 +1,53 @@
+{
+  "title.stardewhud.config": "Настройка HUD в Stardew",
+
+  "category.stardewhud.general": "Общее",
+  "category.stardewhud.position": "Положение и Масштаб",
+  "category.stardewhud.visibility": "Видимость компонентов",
+  "category.stardewhud.effects": "Ванильные эффекты",
+
+  "option.stardewhud.enabled": "Включить HUD",
+  "option.stardewhud.counterItemId": "ID Элемента",
+  "option.stardewhud.seasonDays": "Дни в сезоне",
+  "option.stardewhud.backgroundAlpha": "Непрозрачность фона",
+  "option.stardewhud.positionX": "X Положение (справа)",
+  "option.stardewhud.positionY": "Положение Y (сверху)",
+  "option.stardewhud.scalePercent": "Масштаб (%)",
+  "option.stardewhud.showClock": "Показать часы",
+  "option.stardewhud.showTimeDisplay": "Отображение времени",
+  "option.stardewhud.showWeather": "Показать погоду",
+  "option.stardewhud.showFortune": "Показать удачу",
+  "option.stardewhud.showSeason": "Показать сезон",
+  "option.stardewhud.showItemCounter": "Показать счетчик предметов",
+  "option.stardewhud.hideVanillaEffects": "Скрыть эффекты Vanilla",
+
+  "tip.stardewhud.effects": "Управление отображением статусных эффектов в Minecraft",
+
+  "tooltip.stardewhud.enabled": "Включить или отключить HUD",
+  "tooltip.stardewhud.counterItemId": "ID предмета для подсчета в инвентаре (например, minecraft:diamond)",
+  "tooltip.stardewhud.seasonDays": "Количество дней в каждом сезоне (по умолчанию 28 дней)",
+  "tooltip.stardewhud.backgroundAlpha": "Прозрачность фона (0.0 = полностью прозрачный, 1.0 = полностью непрозрачный)",
+  "tooltip.stardewhud.positionX": "Расстояние от правого края экрана (0 = автоматическое положение)",
+  "tooltip.stardewhud.positionY": "Расстояние от верхнего края экрана (0 = автоматическое положение)",
+  "tooltip.stardewhud.scalePercent": "Размер HUD в процентах (от 10% до 500%)",
+  "tooltip.stardewhud.showClock": "Показать или скрыть компонент часов",
+  "tooltip.stardewhud.showTimeDisplay": "Показать/Cкрыть отображение времени и даты",
+  "tooltip.stardewhud.showWeather": "Показать/Скрыть значок погоды",
+  "tooltip.stardewhud.showFortune": "Показать/Скрыть значок удачи",
+  "tooltip.stardewhud.showSeason": "Вкл./Выкл. отображение значка сезона",
+  "tooltip.stardewhud.showItemCounter": "Показать/Скрыть счетчик предметов",
+  "tooltip.stardewhud.hideVanillaEffects": "Скрывать эффекты статуса ванили, когда они перекрывают HUD",
+
+  "weekday.stardewhud.monday": "Пн",
+  "weekday.stardewhud.tuesday": "Вт",
+  "weekday.stardewhud.wednesday": "Ср",
+  "weekday.stardewhud.thursday": "Чт",
+  "weekday.stardewhud.friday": "Пт",
+  "weekday.stardewhud.saturday": "Сб",
+  "weekday.stardewhud.sunday": "Вс",
+
+  "time.stardewhud.gameDay": "День %d %s",
+
+  "stardewhud.message.config_saved": "§aКонфигурация StardewHUD сохранена!",
+  "stardewhud.message.config_reset": "§eКонфигурация StardewHUD сброшена к значениям по умолчанию!"
+}

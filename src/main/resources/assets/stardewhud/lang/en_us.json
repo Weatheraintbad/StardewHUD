@@ -8,6 +8,7 @@
 
   "option.stardewhud.enabled": "Enable HUD",
   "option.stardewhud.counterItemId": "Counter Item ID",
+  "option.stardewhud.seasonDays": "Season Days",
   "option.stardewhud.backgroundAlpha": "Background Opacity",
   "option.stardewhud.positionX": "X Position (from right)",
   "option.stardewhud.positionY": "Y Position (from top)",
@@ -24,6 +25,7 @@
 
   "tooltip.stardewhud.enabled": "Enable or disable the entire HUD",
   "tooltip.stardewhud.counterItemId": "Item ID to count in inventory (e.g. minecraft:diamond)",
+  "tooltip.stardewhud.seasonDays": "Number of days each season lasts (default 28 days)",
   "tooltip.stardewhud.backgroundAlpha": "Transparency of the background (0.0 = fully transparent, 1.0 = fully opaque)",
   "tooltip.stardewhud.positionX": "Distance from right edge of screen (0 = auto position)",
   "tooltip.stardewhud.positionY": "Distance from top edge of screen (0 = auto position)",
@@ -44,5 +46,8 @@
   "weekday.stardewhud.saturday": "Sat",
   "weekday.stardewhud.sunday": "Sun",
 
-  "time.stardewhud.gameDay": "D %d %s"
+  "time.stardewhud.gameDay": "D %d %s",
+
+  "stardewhud.message.config_saved": "§aStardewHUD configuration saved!",
+  "stardewhud.message.config_reset": "§eStardewHUD configuration reset to defaults!"
 }

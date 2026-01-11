@@ -48,8 +48,11 @@ public class SeasonComponent {
             long oldDay = lastCalculatedDay;
             lastCalculatedDay = dayFromTicks;
 
-            // 计算季节索引（每91天一个季节）
-            int seasonIndex = (int)((dayFromTicks / 28) % 4);
+            // 从配置中获取每个季节持续的天数
+            int seasonDays = StardewHUD.getConfig().seasonDays;
+
+            // 计算季节索引（使用配置的天数）
+            int seasonIndex = (int)((dayFromTicks / seasonDays) % 4);
 
             // 获取新季节图标
             Identifier newSeasonIcon = getSeasonIcon(seasonIndex);
@@ -59,13 +62,14 @@ public class SeasonComponent {
                 Identifier oldIcon = currentSeasonIcon;
                 currentSeasonIcon = newSeasonIcon;
 
-                StardewHUD.LOGGER.info("季节图标切换: [{}] 第{}天 -> 第{}天, 图标: {} -> {}",
+                StardewHUD.LOGGER.info("季节图标切换: [{}] 第{}天 -> 第{}天, 图标: {} -> {} (每个季节{}天)",
                         getSeasonName(seasonIndex),
                         oldDay, dayFromTicks,
-                        getFileName(oldIcon), getFileName(newSeasonIcon));
+                        getFileName(oldIcon), getFileName(newSeasonIcon),
+                        seasonDays);
             } else {
-                StardewHUD.LOGGER.debug("游戏日变化: 第{}天 -> 第{}天, 季节保持: {}",
-                        oldDay, dayFromTicks, getSeasonName(seasonIndex));
+                StardewHUD.LOGGER.debug("游戏日变化: 第{}天 -> 第{}天, 季节保持: {} (每个季节{}天)",
+                        oldDay, dayFromTicks, getSeasonName(seasonIndex), seasonDays);
             }
         }
     }

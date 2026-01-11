@@ -38,6 +38,9 @@ public class HudRenderer {
     private static final int TOTAL_WIDTH = CLOCK_WIDTH + INFO_WIDTH;
     private static final int TOTAL_HEIGHT = INFO_HEIGHT + COUNTER_TOP_MARGIN + COUNTER_HEIGHT;
 
+    // 80%缩放常量 - 添加与Forge版本一致
+    private static final float SCALE_80_PERCENT = 0.8f;
+
     public HudRenderer(ModConfig config) {
         this.config = config;
         this.client = MinecraftClient.getInstance();
@@ -56,11 +59,14 @@ public class HudRenderer {
 
         // 计算屏幕尺寸
         int screenWidth = client.getWindow().getScaledWidth();
-        int margin = 10; // 边距
+        int margin = 5; // 边距 - 修改为5像素（与Forge版本一致）
 
-        // 计算缩放后的总尺寸
-        int scaledTotalWidth = (int)(TOTAL_WIDTH * config.scale);
-        int scaledTotalHeight = (int)(TOTAL_HEIGHT * config.scale);
+        // 计算总缩放比例（80% * config.scale）- 与Forge版本一致
+        float totalScale = SCALE_80_PERCENT * config.scale;
+
+        // 计算缩放后的总尺寸 - 使用新的totalScale
+        int scaledTotalWidth = (int)(TOTAL_WIDTH * totalScale);
+        int scaledTotalHeight = (int)(TOTAL_HEIGHT * totalScale);
 
         // 计算位置（现在从右侧计算X坐标）
         int x, y;
@@ -77,7 +83,7 @@ public class HudRenderer {
         // 保存当前变换状态
         context.getMatrices().push();
         context.getMatrices().translate(x, y, 0);
-        context.getMatrices().scale(config.scale, config.scale, 1.0f);
+        context.getMatrices().scale(totalScale, totalScale, 1.0f); // 使用totalScale
 
         try {
             // 1. 渲染计数器（如果启用）
@@ -161,16 +167,16 @@ public class HudRenderer {
         return client;
     }
 
-    // 获取缩放后的HUD尺寸
+    // 获取缩放后的HUD尺寸（包含80%缩放）- 更新为包含80%缩放
     public int getHudWidth() {
-        return (int)(TOTAL_WIDTH * config.scale);
+        return (int)(TOTAL_WIDTH * SCALE_80_PERCENT * config.scale);
     }
 
     public int getHudHeight() {
-        return (int)(TOTAL_HEIGHT * config.scale);
+        return (int)(TOTAL_HEIGHT * SCALE_80_PERCENT * config.scale);
     }
 
-    // 向其他组件暴露原始尺寸常量
+    // 向其他组件暴露原始尺寸常量（不包含80%缩放）
     public static int getClockWidth() {
         return CLOCK_WIDTH;
     }
@@ -201,5 +207,10 @@ public class HudRenderer {
 
     public static int getTotalHeight() {
         return TOTAL_HEIGHT;
+    }
+
+    // 获取总缩放比例（包含80%缩放）- 新增方法，与Forge版本保持一致
+    public float getTotalScale() {
+        return SCALE_80_PERCENT * config.scale;
     }
 }

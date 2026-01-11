@@ -44,6 +44,20 @@ public class ConfigScreenWrapper {
                 .setSaveConsumer(newValue -> config.counterItemId = newValue)
                 .build());
 
+        // 新增：季节天数配置
+        general.addEntry(entryBuilder.startIntField(
+                        Text.translatable("option.stardewhud.seasonDays"),
+                        config.seasonDays)
+                .setDefaultValue(28)
+                .setMin(1)
+                .setMax(1000)
+                .setTooltip(Text.translatable("tooltip.stardewhud.seasonDays"))
+                .setSaveConsumer(newValue -> {
+                    int safeValue = Math.max(1, Math.min(newValue, 1000));
+                    config.seasonDays = safeValue;
+                })
+                .build());
+
         general.addEntry(entryBuilder.startFloatField(
                         Text.translatable("option.stardewhud.backgroundAlpha"),
                         config.backgroundAlpha)
