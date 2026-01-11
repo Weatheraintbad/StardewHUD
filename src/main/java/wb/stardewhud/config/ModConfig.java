@@ -26,6 +26,9 @@ public class ModConfig {
     public float backgroundAlpha = 1.0f; // 背景不透明度
     public String counterItemId = "minecraft:diamond";
 
+    // 季节配置
+    public int seasonDays = 28; // 每个季节持续的天数（默认28天）
+
     // 组件可见性
     public boolean showClock = true;
     public boolean showTimeDisplay = true;
@@ -62,6 +65,9 @@ public class ModConfig {
                 this.scale = Math.max(0.1f, Math.min(loaded.scale, 5.0f));
                 this.backgroundAlpha = Math.max(0.0f, Math.min(loaded.backgroundAlpha, 1.0f));
                 this.counterItemId = loaded.counterItemId != null ? loaded.counterItemId : "minecraft:diamond";
+
+                // 加载季节天数配置
+                this.seasonDays = Math.max(1, Math.min(loaded.seasonDays, 1000)); // 限制在1-1000天
 
                 // 加载组件可见性
                 this.showClock = loaded.showClock;

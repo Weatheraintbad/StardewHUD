@@ -8,6 +8,7 @@
 
   "option.stardewhud.enabled": "启用HUD",
   "option.stardewhud.counterItemId": "计数物品ID",
+  "option.stardewhud.seasonDays": "季节天数",
   "option.stardewhud.backgroundAlpha": "背景透明度",
   "option.stardewhud.positionX": "X位置（从右侧起）",
   "option.stardewhud.positionY": "Y位置（从顶部起）",
@@ -24,6 +25,7 @@
 
   "tooltip.stardewhud.enabled": "启用或禁用整个HUD显示",
   "tooltip.stardewhud.counterItemId": "在背包中计数的物品ID（例如：minecraft:diamond）",
+  "tooltip.stardewhud.seasonDays": "每个季节持续的天数（默认28天）",
   "tooltip.stardewhud.backgroundAlpha": "背景透明度（0.0 = 完全透明，1.0 = 完全不透明）",
   "tooltip.stardewhud.positionX": "距离屏幕右侧的距离（0 = 自动定位到右上角）",
   "tooltip.stardewhud.positionY": "距离屏幕顶部的距离（0 = 自动定位到右上角）",
@@ -44,5 +46,8 @@
   "weekday.stardewhud.saturday": "周六",
   "weekday.stardewhud.sunday": "周日",
 
-  "time.stardewhud.gameDay": "%d日 %s"
+  "time.stardewhud.gameDay": "%d日 %s",
+
+  "stardewhud.message.config_saved": "§aStardewHUD 配置已保存！",
+  "stardewhud.message.config_reset": "§eStardewHUD 配置已重置为默认值！"
 }
