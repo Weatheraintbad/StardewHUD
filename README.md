@@ -37,10 +37,17 @@ Highly customizable configuration interface<br>
 6. 是否隐藏原版效果图标 / Hide vanilla effect icon
 
 > [!TIP]
-> **<span>
+> <span>
+> 在配置界面中可调整季节持续天数，与不同的季节模组搭配使用（默认为28天）。<br>
+> In the configuration screen, you can adjust the number of days of the season and use it with different season mods (28 days by default).<br>
+> 
+> Fabric Season / Forge Season: 28 days<br>
+> Ecliptic Seasons: 30 days<br>
+> serene seasons: 32 days<br>
+> 
 > 与每日运势模组联动使用时需在模组菜单中关闭“显示季节”以显示运势图标。<br>
 > When using the Daily Fortune mod, you need to turn off "Show Season" in the mod menu to display the fortune icon.
-> </span>**
+> </span>
 
 <div align="center">
 
