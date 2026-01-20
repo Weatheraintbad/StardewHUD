@@ -70,7 +70,7 @@ public class ClockComponent {
 
     private float calculateClockAngle(long timeOfDay) {
         // 时间到角度直接映射
-        // 底部为270°，每日6:00为270°，从270°开始，每天减少180°
+        // 底部为270°，每日6:00为270°，从270°开始，每天增加180°
         float angle = 270.0f + (timeOfDay % 24000) / 24000.0f * 180.0f;
 
         return angle;
