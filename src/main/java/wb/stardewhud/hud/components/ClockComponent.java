@@ -69,16 +69,9 @@ public class ClockComponent {
     }
 
     private float calculateClockAngle(long timeOfDay) {
-        // 时间映射：左半圆内逆时针旋转
-        // 18:00（12000刻）→ 90°（顶部）
-        // 24:00（18000刻）→ 135°（左上）
-        // 6:00（0刻）→ 180°（左侧）
-        // 12:00（6000刻）→ 225°（左下）
-        // 18:00（12000刻）→ 270°（底部，跳回90°）
-
-        long offsetFrom1800 = (timeOfDay + 12000) % 24000;
-        float progress = offsetFrom1800 / 24000.0f;
-        float angle = 90.0f - progress * 180.0f;
+        // 时间到角度直接映射
+        // 底部为270°，每日6:00为270°，从270°开始，每天减少180°
+        float angle = 270.0f + (timeOfDay % 24000) / 24000.0f * 180.0f;
 
         return angle;
     }
