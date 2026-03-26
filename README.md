@@ -6,11 +6,13 @@
   [<img alt="forge" height="42" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/forge_vector.svg" >](https://github.com/Weatheraintbad/StardewHUD-Forge)&nbsp;&nbsp;
   [<img alt="neoforge" height="42" src="https://cdn.jsdelivr.net/gh/Hyperbole-Devs/vectors@neoforge_badges/assets/cozy/supported/neoforge_vector.svg">](https://github.com/Weatheraintbad/StardewHUD-NeoForge)&nbsp;&nbsp;
   [<img alt="modrinth" height="42" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/modrinth_vector.svg">](https://modrinth.com/mod/stardew-hud)&nbsp;&nbsp;
-  [<img alt="curseforge" height="42" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/curseforge_vector.svg">](https://www.curseforge.com/minecraft/mc-mods/stardew-hud)&nbsp;&nbsp;
-  [<img alt="github" height="42" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/github_vector.svg">](https://github.com/Weatheraintbad/StardewHUD/releases)
+  [<img alt="curseforge" height="42" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/curseforge_vector.svg">](https://www.curseforge.com/minecraft/mc-mods/stardew-hud)
   
-  [<img alt="fabric-api" height="36" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/requires/fabric-api_vector.svg">](https://modrinth.com/mod/fabric-api)&nbsp;&nbsp;&nbsp;
-  [<img alt="cloth-config-api" height="36" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/requires/cloth-config-api_vector.svg">](https://modrinth.com/mod/cloth-config)
+  [<img alt="fabric-api" height="32" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/requires/fabric-api_vector.svg">](https://modrinth.com/mod/fabric-api)&nbsp;&nbsp;
+  [<img alt="cloth-config-api" height="32" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/requires/cloth-config-api_vector.svg">](https://modrinth.com/mod/cloth-config)
+
+![Modrinth Downloads](https://img.shields.io/modrinth/dt/hvnOGUOZ?logo=Modrinth&label=Modrinth%20Downloads&color=%231d953f)&nbsp;&nbsp;![CurseForge Downloads](https://img.shields.io/curseforge/dt/1418842?logo=CurseForge&label=CurseForge%20Downloads&color=orange)&nbsp;&nbsp;![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/Weatheraintbad/StardewHUD/total?logo=Github&label=Github%20Downloads&color=white)
+
 
   ### 为我的世界添加星露谷物语的HUD显示组件！
 
