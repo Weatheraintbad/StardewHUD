@@ -1,18 +1,16 @@
-<img width="2310" height="528" alt="screenshot (11)" src="https://github.com/user-attachments/assets/16a7394c-6679-4281-9e2b-11740b0bad16" /><br>
-
 <div align="center">
 
+<img width="1200" alt="screenshot (11)" src="https://github.com/user-attachments/assets/16a7394c-6679-4281-9e2b-11740b0bad16" /><br>
 
-  [<img alt="fabric" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/fabric_vector.svg">](https://github.com/Weatheraintbad/StardewHUD)&nbsp;&nbsp;&nbsp;
-  [<img alt="forge" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/forge_vector.svg" >](https://github.com/Weatheraintbad/StardewHUD-Forge)&nbsp;&nbsp;&nbsp;
-  [<img alt="neoforge" height="56" src="https://cdn.jsdelivr.net/gh/Hyperbole-Devs/vectors@neoforge_badges/assets/cozy/supported/neoforge_vector.svg">](https://github.com/Weatheraintbad/StardewHUD-NeoForge)
-
-  [<img alt="modrinth" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/modrinth_vector.svg">](https://modrinth.com/mod/stardew-hud)&nbsp;&nbsp;&nbsp;
-  [<img alt="curseforge" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/curseforge_vector.svg">](https://www.curseforge.com/minecraft/mc-mods/stardew-hud)&nbsp;&nbsp;&nbsp;
-  [<img alt="github" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/github_vector.svg">](https://github.com/Weatheraintbad/StardewHUD/releases)
+  [<img alt="fabric" height="42" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/fabric_vector.svg">](https://github.com/Weatheraintbad/StardewHUD)&nbsp;&nbsp;
+  [<img alt="forge" height="42" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/forge_vector.svg" >](https://github.com/Weatheraintbad/StardewHUD-Forge)&nbsp;&nbsp;
+  [<img alt="neoforge" height="42" src="https://cdn.jsdelivr.net/gh/Hyperbole-Devs/vectors@neoforge_badges/assets/cozy/supported/neoforge_vector.svg">](https://github.com/Weatheraintbad/StardewHUD-NeoForge)&nbsp;&nbsp;
+  [<img alt="modrinth" height="42" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/modrinth_vector.svg">](https://modrinth.com/mod/stardew-hud)&nbsp;&nbsp;
+  [<img alt="curseforge" height="42" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/curseforge_vector.svg">](https://www.curseforge.com/minecraft/mc-mods/stardew-hud)&nbsp;&nbsp;
+  [<img alt="github" height="42" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/github_vector.svg">](https://github.com/Weatheraintbad/StardewHUD/releases)
   
-  [<img alt="fabric-api" height="40" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/requires/fabric-api_vector.svg">](https://modrinth.com/mod/fabric-api)&nbsp;&nbsp;&nbsp;
-  [<img alt="cloth-config-api" height="40" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/requires/cloth-config-api_vector.svg">](https://modrinth.com/mod/cloth-config)
+  [<img alt="fabric-api" height="36" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/requires/fabric-api_vector.svg">](https://modrinth.com/mod/fabric-api)&nbsp;&nbsp;&nbsp;
+  [<img alt="cloth-config-api" height="36" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/requires/cloth-config-api_vector.svg">](https://modrinth.com/mod/cloth-config)
 
   ### 为我的世界添加星露谷物语的HUD显示组件！
 
